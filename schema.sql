@@ -20,9 +20,11 @@ CREATE TABLE plant(
 CREATE TABLE recording(
     recording_id INT NOT NULL PRIMARY KEY, 
     plant_id INT NOT NULL,
-    soil_moisture DECIMAL(8,2) NOT NULL, 
+    soil_moisture DECIMAL(8,2) NOT NULL,
+    CONSTRAINT not_a_percentage CHECK(soil_moisture BETWEEN 0.00 AND 100.00), 
     temperature DECIMAL(8,2) NOT NULL,
-    last_watered TIMESTAMP NOT NULL, 
-    recording_at TIMESTAMP NOT NULL,
+    CONSTRAINT not_valid_temperature CHECK(temperature BETWEEN -10.00 AND 25),
+    last_watered DATETIME, 
+    recording_at DATETIME NOT NULL,
     FOREIGN KEY(plant_id) REFERENCES plant
 );
