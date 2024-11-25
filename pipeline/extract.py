@@ -11,7 +11,7 @@ PLANT_IDS = range(1, 51)
 OUTPUT_FILE = os.path.join("../data", "plant_data.csv")
 
 
-def get_plant_data(plant_id):
+def get_plant_data(plant_id: int) -> dict:
     """Get data for a plant from a specific plant ID from the API endpoint."""
     try:
         logging.info("Retrieving data for plant ID %s", plant_id)
@@ -23,13 +23,13 @@ def get_plant_data(plant_id):
         return None
 
 
-def extract_botanist_name(name):
+def extract_botanist_name(name: str) -> tuple:
     """Extract and return the first and last name from the botanist name."""
     name_parts = name.split(" ")
     return name_parts[0], name_parts[1]
 
 
-def parse_plant_data(raw_data):
+def parse_plant_data(raw_data: dict) -> dict:
     """Parse and transform raw plant data into a dictionary."""
     try:
         botanist = raw_data.get("botanist", {})
@@ -44,7 +44,7 @@ def parse_plant_data(raw_data):
             "soil_moisture": raw_data.get("soil_moisture"),
             "temperature": raw_data.get("temperature"),
             "last_watered": raw_data.get("last_watered"),
-            "recording_at": raw_data.get("recording_at"),
+            "recording_at": raw_data.get("recording_taken"),
             "botanist_first_name": botanist_first_name,
             "botanist_last_name": botanist_last_name,
             "botanist_email": botanist.get("email"),
@@ -56,7 +56,7 @@ def parse_plant_data(raw_data):
         return None
 
 
-def main():
+def main() -> None:
     """Main function to get, parse, and save plant data from the API to a CSV file."""
     all_data = []
 
