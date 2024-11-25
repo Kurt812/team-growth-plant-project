@@ -23,5 +23,6 @@ CREATE TABLE recording(
     soil_moisture DECIMAL(8,2) NOT NULL, 
     temperature DECIMAL(8,2) NOT NULL,
     last_watered TIMESTAMP NOT NULL, 
-    recording_at TIMESTAMP NOT NULL
+    recording_at TIMESTAMP NOT NULL,
+    FOREIGN KEY(plant_id) REFERENCES plant
 );
