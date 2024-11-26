@@ -1,49 +1,48 @@
 plant_id,plant_name,soil_moisture,temperature,last_watered,recording_at,botanist_first_name,botanist_last_name,botanist_email,botanist_phone
-1,Venus flytrap,86.98547878346457,12.045684388917204,"Mon, 25 Nov 2024 13:54:32 GMT",2024-11-25 17:34:54,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-2,Corpse flower,88.86135076160146,9.167656808524832,"Mon, 25 Nov 2024 14:10:54 GMT",2024-11-25 17:34:55,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-3,Rafflesia arnoldii,90.50845155523535,10.027175340414386,"Mon, 25 Nov 2024 14:50:16 GMT",2024-11-25 17:34:56,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-4,Black bat flower,84.5799906500994,11.345611905911323,"Mon, 25 Nov 2024 13:16:25 GMT",2024-11-25 17:34:57,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-5,Pitcher plant,90.99335940208137,11.213530788589374,"Mon, 25 Nov 2024 14:56:18 GMT",2024-11-25 17:34:58,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-6,Wollemi pine,86.68840944392956,10.984654176726272,"Mon, 25 Nov 2024 13:35:35 GMT",2024-11-25 17:34:58,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-8,Bird of paradise,84.97161995427436,11.560320379537396,"Mon, 25 Nov 2024 13:23:01 GMT",2024-11-25 17:34:59,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-9,Cactus,88.27272189178744,10.616576371769456,"Mon, 25 Nov 2024 14:12:43 GMT",2024-11-25 17:35:00,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-10,"Dragon tree,",84.37319756123433,10.241438716208735,"Mon, 25 Nov 2024 13:04:57 GMT",2024-11-25 17:35:01,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-11,Asclepias Curassavica,86.64832624250937,9.487910551449772,"Mon, 25 Nov 2024 13:37:24 GMT",2024-11-25 17:35:03,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-12,Brugmansia X Candida,84.60375749803536,12.84279603577535,"Mon, 25 Nov 2024 13:13:51 GMT",2024-11-25 17:35:04,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-13,Canna ‘Striata’,86.89411044821264,9.565598792586918,"Mon, 25 Nov 2024 13:36:47 GMT",2024-11-25 17:35:05,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-14,Colocasia Esculenta,88.86827485136406,13.176371060973313,"Mon, 25 Nov 2024 14:17:54 GMT",2024-11-25 17:35:07,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-15,Cuphea ‘David Verity’,86.49378900882353,10.002262907952613,"Mon, 25 Nov 2024 13:45:31 GMT",2024-11-25 17:35:07,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-16,Euphorbia Cotinifolia,80.76020836000001,13.308494845418075,"Mon, 25 Nov 2024 13:50:40 GMT",2024-11-25 17:35:07,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-17,Ipomoea Batatas,87.63463017555772,9.806334892106182,"Mon, 25 Nov 2024 14:02:40 GMT",2024-11-25 17:35:08,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-18,Manihot Esculenta ‘Variegata’,89.19402936407766,9.072982003040977,"Mon, 25 Nov 2024 14:29:39 GMT",2024-11-25 17:35:09,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-19,Musa Basjoo,85.98338765796831,13.876071022569004,"Mon, 25 Nov 2024 13:24:30 GMT",2024-11-25 17:35:09,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-20,Salvia Splendens,90.28611602346041,8.635779265292388,"Mon, 25 Nov 2024 14:49:34 GMT",2024-11-25 17:35:11,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-21,Anthurium,89.10450092212726,11.046349706660859,"Mon, 25 Nov 2024 14:23:59 GMT",2024-11-25 17:35:11,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-22,Bird of Paradise,84.10667638011697,9.56996390884312,"Mon, 25 Nov 2024 13:03:26 GMT",2024-11-25 17:35:12,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-23,Cordyline Fruticosa,90.8769565547025,16.16647282766843,"Mon, 25 Nov 2024 14:56:47 GMT",2024-11-25 17:35:13,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-24,Ficus,89.77760586666666,13.07834134165224,"Mon, 25 Nov 2024 14:44:00 GMT",2024-11-25 17:35:13,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-25,Palm Trees,87.75345491234684,11.608008487624437,"Mon, 25 Nov 2024 13:58:41 GMT",2024-11-25 17:35:14,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-26,Dieffenbachia Seguine,89.40455428426863,14.16972158910723,"Mon, 25 Nov 2024 14:23:18 GMT",2024-11-25 17:35:15,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-27,Spathiphyllum,91.02411507244996,10.777452295385219,"Mon, 25 Nov 2024 14:58:20 GMT",2024-11-25 17:35:15,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-28,Croton,89.31536086913087,12.425039521630694,"Mon, 25 Nov 2024 14:37:02 GMT",2024-11-25 17:35:17,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-29,Aloe Vera,85.18774125537885,10.872432783805602,"Mon, 25 Nov 2024 13:11:24 GMT",2024-11-25 17:35:18,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-30,Ficus Elastica,87.84457775506445,14.530010749853565,"Mon, 25 Nov 2024 13:55:19 GMT",2024-11-25 17:35:19,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-31,Sansevieria Trifasciata,84.44405654326923,13.38264599515374,"Mon, 25 Nov 2024 13:05:43 GMT",2024-11-25 17:35:21,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-32,Philodendron Hederaceum,88.93884896918489,10.623922249568334,"Mon, 25 Nov 2024 14:29:54 GMT",2024-11-25 17:35:21,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-33,Schefflera Arboricola,87.80148343009708,13.578398550154635,"Mon, 25 Nov 2024 14:05:58 GMT",2024-11-25 17:35:22,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-34,Aglaonema Commutatum,86.48269259844055,13.435529829012545,"Mon, 25 Nov 2024 13:44:15 GMT",2024-11-25 17:35:23,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-35,Monstera Deliciosa,85.62749000098717,12.965414246354058,"Mon, 25 Nov 2024 13:32:46 GMT",2024-11-25 17:35:25,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-36,Tacca Integrifolia,88.40988549154136,27.885401593093658,"Mon, 25 Nov 2024 14:09:55 GMT",2024-11-25 17:35:26,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-37,Psychopsis Papilio,89.04311284285714,11.105811292602555,"Mon, 25 Nov 2024 14:23:43 GMT",2024-11-25 17:35:27,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-38,Saintpaulia Ionantha,87.19794170511628,11.090795527175436,"Mon, 25 Nov 2024 13:46:06 GMT",2024-11-25 17:35:28,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-39,Gaillardia,88.23218786169154,13.424856855230692,"Mon, 25 Nov 2024 14:18:23 GMT",2024-11-25 17:35:29,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-40,Amaryllis,88.3612389426987,9.12150096898296,"Mon, 25 Nov 2024 14:05:38 GMT",2024-11-25 17:35:31,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-41,Caladium Bicolor,87.1093573488806,11.794064707916403,"Mon, 25 Nov 2024 13:45:13 GMT",2024-11-25 17:35:31,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-42,Chlorophytum Comosum,90.39557407046333,9.882692915101096,"Mon, 25 Nov 2024 14:49:43 GMT",2024-11-25 17:35:33,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-44,Araucaria Heterophylla,86.10709345376549,9.599023303218727,"Mon, 25 Nov 2024 13:32:40 GMT",2024-11-25 17:35:33,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-45,Begonia,87.74536820212766,9.042542779095974,"Mon, 25 Nov 2024 14:04:23 GMT",2024-11-25 17:35:34,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
-46,Medinilla Magnifica,88.78843163904236,13.349916068668612,"Mon, 25 Nov 2024 14:12:39 GMT",2024-11-25 17:35:34,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-47,Calliandra Haematocephala,78.97412692714286,13.359579532928326,"Mon, 25 Nov 2024 13:30:18 GMT",2024-11-25 17:35:36,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-48,Zamioculcas Zamiifolia,89.19214635742188,14.908848133078164,"Mon, 25 Nov 2024 14:31:09 GMT",2024-11-25 17:35:36,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
-49,Crassula Ovata,87.55903784742469,9.427174174374052,"Mon, 25 Nov 2024 14:02:15 GMT",2024-11-25 17:35:36,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
-50,Epipremnum Aureum,87.65327509583737,13.198527854816493,"Mon, 25 Nov 2024 14:03:04 GMT",2024-11-25 17:35:38,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+1,Venus flytrap,94.11815770669291,12.042444907141421,"Tue, 26 Nov 2024 13:54:32 GMT",2024-11-26 15:34:07,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+2,Corpse flower,95.45520002729754,9.159042842335564,"Tue, 26 Nov 2024 14:10:54 GMT",2024-11-26 15:34:08,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+3,Rafflesia arnoldii,97.47045641498559,10.02044906745733,"Tue, 26 Nov 2024 14:50:16 GMT",2024-11-26 15:34:09,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+4,Black bat flower,91.78450851491054,11.341576353838889,"Tue, 26 Nov 2024 13:16:25 GMT",2024-11-26 15:34:09,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+5,Pitcher plant,97.84928256480606,11.207718187912969,"Tue, 26 Nov 2024 14:56:18 GMT",2024-11-26 15:34:11,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+6,Wollemi pine,93.40423733827618,10.980556984446613,"Tue, 26 Nov 2024 13:35:35 GMT",2024-11-26 15:34:11,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+8,Bird of paradise,92.17515150894633,11.552525910705015,"Tue, 26 Nov 2024 13:23:01 GMT",2024-11-26 15:34:12,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+9,Cactus,95.27500259516908,10.612491435694631,"Tue, 26 Nov 2024 14:12:43 GMT",2024-11-26 15:34:13,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+10,"Dragon tree,",91.36282073577628,13.961668756600211,"Tue, 26 Nov 2024 13:04:57 GMT",2024-11-26 15:34:13,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+11,Asclepias Curassavica,93.43550231086142,9.482358480828678,"Tue, 26 Nov 2024 13:37:24 GMT",2024-11-26 15:34:14,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+12,Brugmansia X Candida,91.72344785166995,12.833760135682212,"Tue, 26 Nov 2024 13:13:51 GMT",2024-11-26 15:34:16,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+13,Canna ‘Striata’,93.53725530339139,9.55736001455826,"Tue, 26 Nov 2024 13:36:47 GMT",2024-11-26 15:34:17,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+14,Colocasia Esculenta,95.6873879830668,13.167552672483628,"Tue, 26 Nov 2024 14:17:54 GMT",2024-11-26 15:34:18,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+15,Cuphea ‘David Verity’,93.59913546372549,9.997414171382545,"Tue, 26 Nov 2024 13:45:31 GMT",2024-11-26 15:34:19,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+16,Euphorbia Cotinifolia,91.11287831714286,13.303589638785569,"Tue, 26 Nov 2024 13:50:40 GMT",2024-11-26 15:34:20,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+17,Ipomoea Batatas,94.66373751988361,9.799462802416564,"Tue, 26 Nov 2024 14:02:40 GMT",2024-11-26 15:34:21,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+18,Manihot Esculenta ‘Variegata’,96.22891899029126,9.064144789915476,"Tue, 26 Nov 2024 14:29:39 GMT",2024-11-26 15:34:23,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+19,Musa Basjoo,92.73611949301025,13.872721176318613,"Tue, 26 Nov 2024 13:24:30 GMT",2024-11-26 15:34:24,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+20,Salvia Splendens,97.36940174682307,8.628087523074537,"Tue, 26 Nov 2024 14:49:34 GMT",2024-11-26 15:34:25,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+21,Anthurium,95.98564303228869,11.040427561311084,"Tue, 26 Nov 2024 14:23:59 GMT",2024-11-26 15:34:26,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+22,Bird of Paradise,91.16857074074073,9.565145125871926,"Tue, 26 Nov 2024 13:03:26 GMT",2024-11-26 15:34:27,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+23,Cordyline Fruticosa,97.82967717658349,11.440737098453265,"Tue, 26 Nov 2024 14:56:47 GMT",2024-11-26 15:34:28,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+24,Ficus,96.98508285373134,13.074008325681241,"Tue, 26 Nov 2024 14:44:00 GMT",2024-11-26 15:34:29,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+25,Palm Trees,94.58101748350613,11.604166072334785,"Tue, 26 Nov 2024 13:58:41 GMT",2024-11-26 15:34:30,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+26,Dieffenbachia Seguine,96.06843903587857,14.166018918722393,"Tue, 26 Nov 2024 14:23:18 GMT",2024-11-26 15:34:31,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+28,Croton,96.55282201698301,12.421822020477896,"Tue, 26 Nov 2024 14:37:02 GMT",2024-11-26 15:34:32,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+29,Aloe Vera,91.964458595884,10.864751360090626,"Tue, 26 Nov 2024 13:11:24 GMT",2024-11-26 15:34:33,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+30,Ficus Elastica,94.51592349263352,14.525623065378372,"Tue, 26 Nov 2024 13:55:19 GMT",2024-11-26 15:34:34,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+31,Sansevieria Trifasciata,91.41034243365385,13.377838548587293,"Tue, 26 Nov 2024 13:05:43 GMT",2024-11-26 15:34:36,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+32,Philodendron Hederaceum,96.14074457952286,10.620345775266427,"Tue, 26 Nov 2024 14:29:54 GMT",2024-11-26 15:34:36,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+33,Schefflera Arboricola,94.8351197145631,13.571959994500768,"Tue, 26 Nov 2024 14:05:58 GMT",2024-11-26 15:34:37,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+34,Aglaonema Commutatum,93.54394761500974,13.430063961113115,"Tue, 26 Nov 2024 13:44:15 GMT",2024-11-26 15:34:38,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+35,Monstera Deliciosa,92.78061581342547,12.957036053419726,"Tue, 26 Nov 2024 13:32:46 GMT",2024-11-26 15:34:39,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+36,Tacca Integrifolia,95.22133850281955,12.333789229570694,"Tue, 26 Nov 2024 14:09:55 GMT",2024-11-26 15:34:39,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+37,Psychopsis Papilio,95.94534807047619,11.101614407478369,"Tue, 26 Nov 2024 14:23:43 GMT",2024-11-26 15:34:40,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+38,Saintpaulia Ionantha,93.93974318418604,11.08625727927958,"Tue, 26 Nov 2024 13:46:06 GMT",2024-11-26 15:34:40,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+39,Gaillardia,95.44402657910447,13.419261218415286,"Tue, 26 Nov 2024 14:18:23 GMT",2024-11-26 15:34:41,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+40,Amaryllis,95.06081643438078,9.113774508794432,"Tue, 26 Nov 2024 14:05:38 GMT",2024-11-26 15:34:42,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+41,Caladium Bicolor,93.87173765018656,11.785598069393918,"Tue, 26 Nov 2024 13:45:13 GMT",2024-11-26 15:34:42,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+42,Chlorophytum Comosum,97.39326035714285,9.878158540341467,"Tue, 26 Nov 2024 14:49:43 GMT",2024-11-26 15:34:43,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+44,Araucaria Heterophylla,93.01811986939943,9.592515430321559,"Tue, 26 Nov 2024 13:32:40 GMT",2024-11-26 15:34:43,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+45,Begonia,94.75598629883946,9.034370045428243,"Tue, 26 Nov 2024 14:04:23 GMT",2024-11-26 15:34:45,Gertrude,Jekyll,gertrude.jekyll@lnhm.co.uk,001-481-273-3691x127
+46,Medinilla Magnifica,95.46362841252302,13.34314845823328,"Tue, 26 Nov 2024 14:12:39 GMT",2024-11-26 15:34:45,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+47,Calliandra Haematocephala,89.33028463,13.355896792322802,"Tue, 26 Nov 2024 13:30:18 GMT",2024-11-26 15:34:46,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+48,Zamioculcas Zamiifolia,96.27125411425781,14.905489749523628,"Tue, 26 Nov 2024 14:31:09 GMT",2024-11-26 15:34:47,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
+49,Crassula Ovata,94.60311874538387,9.419151911153548,"Tue, 26 Nov 2024 14:02:15 GMT",2024-11-26 15:34:48,Eliza,Andrews,eliza.andrews@lnhm.co.uk,(846)669-6651x75948
+50,Epipremnum Aureum,94.67041612100678,13.191873032704471,"Tue, 26 Nov 2024 14:03:04 GMT",2024-11-26 15:34:49,Carl,Linnaeus,carl.linnaeus@lnhm.co.uk,(146)994-1635x35992
