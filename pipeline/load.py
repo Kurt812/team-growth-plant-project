@@ -17,13 +17,14 @@ DB_CONFIG = {
 }
 
 CLEANED_FILE = os.path.join("../data", "cleaned_plant_data.csv")
+SCHEMA_NAME = os.getenv("SCHEMA_NAME")
 
 
 def get_db_connection():
     """Establish a connection to the SQL Server database using pymssql."""
     try:
         conn = pymssql.connect(
-            host=DB_CONFIG["server"],
+            server=DB_CONFIG["host"],
             user=DB_CONFIG["username"],
             password=DB_CONFIG["password"],
             database=DB_CONFIG["database"],
@@ -48,8 +49,8 @@ def load_data_to_database(conn, transformed_df):
                             row["botanist_email"], row["botanist_phone"])
             if botanist_key not in botanist_ids:
                 cursor.execute(
-                    """
-                    INSERT INTO botanist (first_name, last_name, email, phone)
+                    f"""
+                    INSERT INTO {SCHEMA_NAME}.botanist (first_name, last_name, email, phone)
                     VALUES (%s, %s, %s, %s)
                     """,
                     (
@@ -72,16 +73,16 @@ def load_data_to_database(conn, transformed_df):
             botanist_id = botanist_ids[botanist_key]
 
             cursor.execute(
-                """
-                INSERT INTO plant (plant_id, botanist_id, plant_name)
+                f"""
+                INSERT INTO {SCHEMA_NAME}.plant (plant_id, botanist_id, plant_name)
                 VALUES (%s, %s, %s)
                 """,
                 (row["plant_id"], botanist_id, row["plant_name"]),
             )
 
             cursor.execute(
-                """
-                INSERT INTO recording (plant_id, soil_moisture, temperature, last_watered, recording_at)
+                f"""
+                INSERT INTO {SCHEMA_NAME}.recording (plant_id, soil_moisture, temperature, last_watered, recording_at)
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
@@ -104,11 +105,12 @@ def load_data_to_database(conn, transformed_df):
 
 if __name__ == "__main__":
     try:
+        logging.info("Loading cleaned data from %s", CLEANED_FILE)
         cleaned_df = pd.read_csv(CLEANED_FILE)
         conn = get_db_connection()
+
         load_data_to_database(conn, cleaned_df)
         conn.close()
-
         logging.info("Data loading process completed successfully.")
     except FileNotFoundError:
         logging.error("Cleaned data file not found: %s", CLEANED_FILE)
