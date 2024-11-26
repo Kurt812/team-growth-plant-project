@@ -1,6 +1,11 @@
 .venv
 .env
 /images
+<<<<<<< HEAD
+*.tfvars
+*.csv
+=======
 .env
 *.csv
 .tfvars
+>>>>>>> f27c88573bedc15e9566b2e391b5929d0f783c70
