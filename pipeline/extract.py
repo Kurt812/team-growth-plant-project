@@ -16,6 +16,10 @@ def get_plant_data(plant_id: int) -> dict:
     try:
         logging.info("Retrieving data for plant ID %s", plant_id)
         response = requests.get(f"{BASE_URL}{plant_id}", timeout=10)
+        if response.status_code != 200:
+            logging.error("Error retrieving data for plant ID %s: %s",
+                          plant_id, response.json())
+            return None
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:

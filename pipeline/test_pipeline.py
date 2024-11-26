@@ -28,6 +28,19 @@ class TestExtractScript(unittest.TestCase):
         result = get_plant_data(999)
         self.assertIsNone(result)
 
+    @patch("extract.requests.get")
+    def test_get_plant_data_sensor_error(self, mock_get):
+        """Test get_plant_data when the API shows a sensor error."""
+        mock_get.return_value.status_code = 404
+        mock_get.return_value.json.return_value = {
+            "error": "plant not found",
+            "plant_id": 7
+        }
+
+        result = get_plant_data(7)
+
+        self.assertIsNone(result)
+
     def test_extract_botanist_name(self):
         """Test extract_botanist_name function."""
         first_name, last_name = extract_botanist_name("Jakub Poskrop")
