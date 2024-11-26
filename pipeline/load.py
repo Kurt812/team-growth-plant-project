@@ -1,8 +1,10 @@
-import pandas as pd
-import pymssql
+# pylint: disable=no-member
+"""This script loads transformed plant data into an SQL Server database."""
 import logging
 import os
 from dotenv import load_dotenv
+import pandas as pd
+import pymssql
 
 logging.basicConfig(level=logging.INFO)
 
@@ -20,7 +22,7 @@ CLEANED_FILE = os.path.join("../data", "cleaned_plant_data.csv")
 SCHEMA_NAME = os.getenv("SCHEMA_NAME")
 
 
-def get_db_connection():
+def get_db_connection() -> pymssql.Connection:
     """Establish a connection to the SQL Server database using pymssql."""
     try:
         conn = pymssql.connect(
@@ -37,13 +39,12 @@ def get_db_connection():
         raise
 
 
-def load_data_to_database(conn, transformed_df):
+def load_data_to_database(connection: pymssql.Connection, transformed_df: pd.DataFrame) -> None:
     """Load transformed data into the database."""
     try:
-        cursor = conn.cursor()
+        cursor = connection.cursor()
 
         logging.info("Inserting botanists into the database...")
-        botanist_ids = {}
         for _, row in transformed_df.iterrows():
             cursor.execute(
                 f"""
@@ -68,7 +69,7 @@ def load_data_to_database(conn, transformed_df):
                 ),
             )
 
-        conn.commit()
+        connection.commit()
         logging.info("Botanists inserted successfully.")
 
         logging.info("Inserting plants into the database...")
@@ -82,7 +83,8 @@ def load_data_to_database(conn, transformed_df):
                 BEGIN
                     INSERT INTO {SCHEMA_NAME}.plant (plant_id, botanist_id, plant_name)
                     VALUES (%s, (SELECT botanist_id FROM {SCHEMA_NAME}.botanist
-                                 WHERE first_name = %s AND last_name = %s AND email = %s AND phone = %s), %s)
+                                 WHERE first_name = %s AND last_name = %s
+                                 AND email = %s AND phone = %s), %s)
                 END
                 """,
                 (
@@ -96,14 +98,15 @@ def load_data_to_database(conn, transformed_df):
                 ),
             )
 
-        conn.commit()
+        connection.commit()
         logging.info("Plants inserted successfully.")
 
         logging.info("Inserting recordings into the database...")
         for _, row in transformed_df.iterrows():
             cursor.execute(
                 f"""
-                INSERT INTO {SCHEMA_NAME}.recording (plant_id, soil_moisture, temperature, last_watered, recording_at)
+                INSERT INTO {SCHEMA_NAME}.recording
+                (plant_id, soil_moisture, temperature, last_watered, recording_at)
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
@@ -115,12 +118,12 @@ def load_data_to_database(conn, transformed_df):
                 ),
             )
 
-        conn.commit()
+        connection.commit()
         logging.info("Recordings inserted successfully.")
 
     except pymssql.DatabaseError as e:
         logging.error("Error occurred: %s", e)
-        conn.rollback()
+        connection.rollback()
         raise
 
 
