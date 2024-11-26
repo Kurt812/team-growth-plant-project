@@ -1,5 +1,4 @@
 """Pipeline script to extract plant data from an API, transform it, and load it into a database."""
-
 import logging
 import pandas as pd
 from dotenv import load_dotenv
