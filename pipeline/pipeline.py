@@ -67,7 +67,7 @@ def run_pipeline() -> None:
 
 
 def lambda_handler(event, context) -> None:
-    '''Lmabda handler function to run when the AWS lambda function is triggered'''
+    '''Lambda handler function to run when the AWS lambda function is triggered'''
     run_pipeline()
 
 
