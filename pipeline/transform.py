@@ -13,7 +13,6 @@ def clean_plant_data(plant_df: pd.DataFrame) -> pd.DataFrame:
     """Setting the types for dataframe columns and removing NaN values"""
 
     plant_df['recording_at'] = pd.to_datetime(
-        << << << < HEAD
         plant_df['recording_at'], errors='coerce')
     plant_df['last_watered'] = pd.to_datetime(
         plant_df['last_watered'], errors='coerce', utc=True).dt.tz_convert(None)
