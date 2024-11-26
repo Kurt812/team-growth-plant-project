@@ -39,7 +39,7 @@ def get_data() -> None:
     plants_details = []
     for plant_id in range(1, NUM_OF_PLANTS+1):
         logging.info("Retrieving data for plant ID %s", plant_id)
-        response = requests.get(f"{BASE_URL}{plant_id}", timeout=10)
+        response = requests.get(f"{BASE_URL}{plant_id}", timeout=30)
         if response.status_code != 200:
             logging.error("Failed to retrieve data on plant ID %s", plant_id)
             continue
@@ -71,9 +71,15 @@ def get_foreign_id(plant_botanist: dict, botanists: dict) -> int:
     return botanist_id[0]
 
 
-def seed_data(plants_data: list[dict]) -> None:
-    connection = get_connection()
-    cursor = get_cursor(connection)
+def check_if_seeded(cursor: Cursor) -> bool:
+    cursor.execute(f"SELECT * FROM {environ['SCHEMA_NAME']}.botanist;")
+    botanists = cursor.fetchall()
+    cursor.execute(f"SELECT * FROM {environ['SCHEMA_NAME']}.plant;")
+    plants = cursor.fetchall()
+    return (botanists and plants)
+
+
+def seed_data(connection: Connection, cursor: Cursor, plants_data: list[dict]) -> None:
     botanists = {}
     for plant in plants_data:
         if plant["botanist"] not in botanists.values():
@@ -91,5 +97,10 @@ def seed_data(plants_data: list[dict]) -> None:
 
 if __name__ == "__main__":
     load_dotenv()
-    plants = get_data()
-    seed_data(plants)
+    conn = get_connection()
+    cursor = get_cursor(conn)
+    if check_if_seeded(cursor):
+        logging.warning("Database is already seeded")
+    else:
+        plants = get_data()
+        seed_data(conn, cursor, plants)
