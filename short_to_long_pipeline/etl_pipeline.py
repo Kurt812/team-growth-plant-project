@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import pandas as pd
 import pymssql
+import boto3
 
 logging.basicConfig(level=logging.INFO)
 load_dotenv()
@@ -15,6 +16,11 @@ DB_CONFIG = {
     "password": os.getenv("DB_PASSWORD"),
     "port": os.getenv("DB_PORT")
 }
+
+S3_BUCKET = os.getenv("S3_BUCKET")
+S3_KEY = os.getenv("S3_KEY", "plant_data/complete_data.parquet")
+
+LOCAL_PARQUET_FILE = "complete_data.parquet"
 
 
 def get_db_connection() -> pymssql.Connection:
@@ -56,12 +62,42 @@ def load_data_to_dataframe(connection: pymssql.Connection) -> pd.DataFrame:
         raise
 
 
+def save_to_parquet(dataframe: pd.DataFrame, local_file: str) -> None:
+    """Save the DataFrame to a Parquet file."""
+    try:
+        dataframe.to_parquet(local_file, engine="pyarrow", index=False)
+        logging.info("Data successfully saved to Parquet file: %s", local_file)
+    except Exception as e:
+        logging.error("Error saving DataFrame to Parquet file: %s", e)
+        raise
+
+
+def upload_to_s3(local_file: str, bucket: str, key: str) -> None:
+    """Uploads a local file to S3."""
+    try:
+        s3_client = boto3.client("s3")
+        s3_client.upload_file(local_file, bucket, key)
+        logging.info(f"""File successfully uploaded to S3 bucket '{
+                     bucket}' with key '{key}'.""")
+    except Exception as e:
+        logging.error("Error uploading file to S3: %s", e)
+        raise
+
+
 if __name__ == "__main__":
 
     try:
         connection = get_db_connection()
         complete_dataframe = load_data_to_dataframe(connection)
-        print(complete_dataframe)
+
+        save_to_parquet(complete_dataframe, LOCAL_PARQUET_FILE)
+
+        upload_to_s3(LOCAL_PARQUET_FILE, S3_BUCKET, S3_KEY)
+
+        if os.path.exists(LOCAL_PARQUET_FILE):
+            os.remove(LOCAL_PARQUET_FILE)
+            logging.info("Temporary Parquet file removed: %s",
+                         LOCAL_PARQUET_FILE)
 
     except Exception as e:
         logging.error("An error occurred: %s", e)
