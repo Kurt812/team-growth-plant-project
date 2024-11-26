@@ -66,5 +66,10 @@ def run_pipeline() -> None:
         raise
 
 
+def lambda_handler(event, context) -> None:
+    '''Lmabda handler function to run when the AWS lambda function is triggered'''
+    run_pipeline()
+
+
 if __name__ == "__main__":
     run_pipeline()
