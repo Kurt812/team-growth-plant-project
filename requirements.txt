@@ -1,5 +1,6 @@
 pytest
 pandas
 requests
-pymssql
 python-dotenv
+pymssql
+
