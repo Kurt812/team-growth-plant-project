@@ -34,44 +34,34 @@ def get_db_connection() -> pymssql.Connection:
         raise
 
 
-def load_data_to_dataframe(connection: pymssql.Connection, query: str) -> pd.DataFrame:
+def load_data_to_dataframe(connection: pymssql.Connection) -> pd.DataFrame:
     """Extracts data from the RDS database into a pandas DataFrame."""
+
+    query = """SELECT p.plant_id, p.plant_name, r.soil_moisture, r.temperature, 
+        r.last_watered, r.recording_at, 
+        b.first_name AS botanist_first_name, b.last_name AS botanist_last_name,
+        b.email AS botanist_email, b.phone AS botanist_phone
+    FROM gamma.plant p
+    JOIN gamma.recording r ON p.plant_id = r.plant_id
+    JOIN gamma.botanist b ON p.botanist_id = b.botanist_id"""
+
     try:
-        df = pd.read_sql(query, connection)
+        complete_df = pd.read_sql(query, connection)
         logging.info("Data successfully loaded into DataFrame.")
-        return df
+        connection.close()
+        logging.info("Database connection closed.")
+        return complete_df
     except Exception as e:
         logging.error("Error loading data to DataFrame: %s", e)
         raise
-
-
-def create_required_dataframes(connection: pymssql.Connection) -> tuple:
-    """Creates the three required dataframes"""
-    botanist_query = "SELECT * FROM gamma.botanist"
-    plant_query = "SELECT * FROM gamma.plant"
-    recording_query = "SELECT * FROM gamma.recording"
-
-    botanists_df = load_data_to_dataframe(connection, botanist_query)
-    plants_df = load_data_to_dataframe(connection, plant_query)
-    recordings_df = load_data_to_dataframe(connection, recording_query)
-
-    connection.close()
-    logging.info("Database connection closed.")
-
-    return botanists_df, plants_df, recordings_df
 
 
 if __name__ == "__main__":
 
     try:
         connection = get_db_connection()
-
-        botanists_df, plants_df, recordings_df = create_required_dataframes(
-            connection)
-
-        print(botanists_df.head())
-        print(plants_df.head())
-        print(recordings_df.head())
+        complete_dataframe = load_data_to_dataframe(connection)
+        print(complete_dataframe)
 
     except Exception as e:
         logging.error("An error occurred: %s", e)
