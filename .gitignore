@@ -2,3 +2,9 @@
 .env
 /images
 *.tfvars
+
+*.txt
+*.hcl
+*.0_x5
+.terraform
+*.tfstate
