@@ -45,41 +45,62 @@ def load_data_to_database(conn, transformed_df):
         logging.info("Inserting botanists into the database...")
         botanist_ids = {}
         for _, row in transformed_df.iterrows():
-            botanist_key = (row["botanist_first_name"], row["botanist_last_name"],
-                            row["botanist_email"], row["botanist_phone"])
-            if botanist_key not in botanist_ids:
-                cursor.execute(
-                    f"""
+            cursor.execute(
+                f"""
+                IF NOT EXISTS (
+                    SELECT 1 FROM {SCHEMA_NAME}.botanist
+                    WHERE first_name = %s AND last_name = %s AND email = %s AND phone = %s
+                )
+                BEGIN
                     INSERT INTO {SCHEMA_NAME}.botanist (first_name, last_name, email, phone)
                     VALUES (%s, %s, %s, %s)
-                    """,
-                    (
-                        row["botanist_first_name"],
-                        row["botanist_last_name"],
-                        row["botanist_email"],
-                        row["botanist_phone"],
-                    ),
-                )
-                cursor.execute("SELECT @@IDENTITY")
-                botanist_ids[botanist_key] = cursor.fetchone()[0]
+                END
+                """,
+                (
+                    row["botanist_first_name"],
+                    row["botanist_last_name"],
+                    row["botanist_email"],
+                    row["botanist_phone"],
+                    row["botanist_first_name"],
+                    row["botanist_last_name"],
+                    row["botanist_email"],
+                    row["botanist_phone"],
+                ),
+            )
 
         conn.commit()
         logging.info("Botanists inserted successfully.")
 
-        logging.info("Inserting plants and recordings into the database...")
+        logging.info("Inserting plants into the database...")
         for _, row in transformed_df.iterrows():
-            botanist_key = (row["botanist_first_name"], row["botanist_last_name"],
-                            row["botanist_email"], row["botanist_phone"])
-            botanist_id = botanist_ids[botanist_key]
-
             cursor.execute(
                 f"""
-                INSERT INTO {SCHEMA_NAME}.plant (plant_id, botanist_id, plant_name)
-                VALUES (%s, %s, %s)
+                IF NOT EXISTS (
+                    SELECT 1 FROM {SCHEMA_NAME}.plant
+                    WHERE plant_id = %s
+                )
+                BEGIN
+                    INSERT INTO {SCHEMA_NAME}.plant (plant_id, botanist_id, plant_name)
+                    VALUES (%s, (SELECT botanist_id FROM {SCHEMA_NAME}.botanist
+                                 WHERE first_name = %s AND last_name = %s AND email = %s AND phone = %s), %s)
+                END
                 """,
-                (row["plant_id"], botanist_id, row["plant_name"]),
+                (
+                    row["plant_id"],
+                    row["plant_id"],
+                    row["botanist_first_name"],
+                    row["botanist_last_name"],
+                    row["botanist_email"],
+                    row["botanist_phone"],
+                    row["plant_name"],
+                ),
             )
 
+        conn.commit()
+        logging.info("Plants inserted successfully.")
+
+        logging.info("Inserting recordings into the database...")
+        for _, row in transformed_df.iterrows():
             cursor.execute(
                 f"""
                 INSERT INTO {SCHEMA_NAME}.recording (plant_id, soil_moisture, temperature, last_watered, recording_at)
@@ -95,7 +116,7 @@ def load_data_to_database(conn, transformed_df):
             )
 
         conn.commit()
-        logging.info("Plants and recordings inserted successfully.")
+        logging.info("Recordings inserted successfully.")
 
     except pymssql.DatabaseError as e:
         logging.error("Error occurred: %s", e)
