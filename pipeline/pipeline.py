@@ -1,43 +1,45 @@
 """Pipeline script to extract plant data from an API, transform it, and load it into a database."""
 
 import logging
-import os
 import pandas as pd
 from dotenv import load_dotenv
 import extract
 import transform
 import load
-logging.basicConfig(level=logging.INFO)
 
-RAW_DATA_FILE = os.path.join("../data", "plant_data.csv")
-CLEANED_DATA_FILE = os.path.join("../data", "cleaned_plant_data.csv")
+logging.basicConfig(level=logging.INFO)
 
 load_dotenv()
 
 
-def make_data_directory() -> None:
-    """Ensure the ../data directory exists for storing intermediate files."""
-    data_dir = os.path.dirname(RAW_DATA_FILE)
-    if not os.path.exists(data_dir):
-        logging.info("Creating data directory: %s", data_dir)
-        os.makedirs(data_dir)
-
-
-def run_extraction() -> None:
+def run_extraction() -> pd.DataFrame:
     """Run the extraction process to retrieve raw plant data from the API."""
     logging.info("Starting the extraction process...")
-    extract.main()
-    logging.info("Extraction completed. Raw data saved to %s", RAW_DATA_FILE)
+    all_data = []
+
+    for plant_id in extract.PLANT_IDS:
+        raw_data = extract.get_plant_data(plant_id)
+        if raw_data:
+            parsed_data = extract.parse_plant_data(raw_data)
+            if parsed_data:
+                all_data.append(parsed_data)
+
+    if not all_data:
+        logging.warning("No data was extracted from the API.")
+        raise ValueError("Extraction process resulted in an empty dataset.")
+
+    raw_df = pd.DataFrame(all_data)
+    logging.info(
+        "Extraction completed. Retrieved data for %d plants.", len(raw_df))
+    return raw_df
 
 
-def run_transformation() -> pd.DataFrame:
+def run_transformation(raw_df: pd.DataFrame) -> pd.DataFrame:
     """Run the transformation process to clean the extracted data."""
     logging.info("Starting the transformation process...")
-    raw_df = pd.read_csv(RAW_DATA_FILE)
     cleaned_df = transform.clean_plant_data(raw_df)
-    cleaned_df.to_csv(CLEANED_DATA_FILE, index=False)
     logging.info(
-        "Transformation completed. Cleaned data saved to %s", CLEANED_DATA_FILE)
+        "Transformation completed. Cleaned data contains %d rows.", len(cleaned_df))
     return cleaned_df
 
 
@@ -54,14 +56,9 @@ def run_loading(cleaned_df: pd.DataFrame) -> None:
 def run_pipeline() -> None:
     """Main function to execute the ETL pipeline."""
     try:
-        make_data_directory()
-
-        run_extraction()
-
-        cleaned_df = run_transformation()
-
+        raw_df = run_extraction()
+        cleaned_df = run_transformation(raw_df)
         run_loading(cleaned_df)
-
         logging.info("ETL pipeline completed successfully.")
 
     except Exception as e:

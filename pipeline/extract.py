@@ -60,7 +60,7 @@ def parse_plant_data(raw_data: dict) -> dict:
         return None
 
 
-def main() -> None:
+def process_data() -> None:
     """Main function to get, parse, and save plant data from the API to a CSV file."""
     all_data = []
 
@@ -79,4 +79,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    process_data()
