@@ -1,4 +1,6 @@
 .venv
+.env
 /images
 .env
 *.csv
+.tfvars
