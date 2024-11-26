@@ -52,6 +52,9 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
+        run: pip3 install -r requirements.txt
+      
+      - name: Install pylint
         run: pip3 install pylint
 
       - name: Run tests
