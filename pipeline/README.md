@@ -1,4 +1,4 @@
-Plant Data ETL Pipeline
+Plant Data ETL Pipeline - API Endpoint to RSS
 =================================
 
 Overview
