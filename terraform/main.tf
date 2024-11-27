@@ -19,8 +19,8 @@ output "ecr_repository_id" {
   value = aws_ecr_repository.c14_team_growth_lmnh.id
 }
 
-resource "aws_s3_bucket" "gamma_long_term_storage" {
-  bucket = "gamma-long-term-storage"                   
+resource "aws_s3_bucket" "long_term_storage" {
+  bucket = "c14-team-growth-storage"                   
 
   tags = {
     Name        = "LongTermStorage"
