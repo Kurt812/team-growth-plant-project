@@ -1,11 +1,21 @@
-"""Extracts the data from the RDS into a dataframe"""
-import logging
+"""
+ETL Pipeline: Extract, Transform, and Load Plant Data
+
+This script performs the following steps as part of an ETL pipeline:
+1. Extracts plant data from an RDS database using pymssql.
+2. Transforms the data into a Pandas DataFrame.
+3. Saves the DataFrame as a Parquet file with a timestamped filename.
+4. Uploads the Parquet file to an AWS S3 bucket.
+"""
+
+# pylint: disable=no-member
 import os
+import logging
 from datetime import datetime
-from dotenv import load_dotenv
-import pandas as pd
-import pymssql
 import boto3
+import pymssql
+import pandas as pd
+from dotenv import load_dotenv
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError
 
 logging.basicConfig(level=logging.INFO)
@@ -26,7 +36,7 @@ S3_KEY_PREFIX = os.getenv("S3_KEY", "plant_data/")
 def get_db_connection() -> pymssql.Connection:
     """Establish a connection to the SQL Server database using pymssql."""
     try:
-        conn = pymssql.connect(
+        connection = pymssql.connect(
             server=DB_CONFIG["host"],
             user=DB_CONFIG["username"],
             password=DB_CONFIG["password"],
@@ -34,29 +44,32 @@ def get_db_connection() -> pymssql.Connection:
             port=DB_CONFIG["port"]
         )
         logging.info("Database connection established.")
-        return conn
+        return connection
     except pymssql.DatabaseError as e:
         logging.error("Failed to connect to the database: %s", e)
         raise
 
 
-def load_data_to_dataframe(connection: pymssql.Connection) -> pd.DataFrame:
+def load_data_to_dataframe(db_connectionn: pymssql.Connection) -> pd.DataFrame:
     """Extracts data from the RDS database into a pandas DataFrame."""
 
-    query = """SELECT p.plant_id, p.plant_name, r.soil_moisture, r.temperature, 
+    query = """
+    SELECT 
+        p.plant_id, p.plant_name, r.soil_moisture, r.temperature, 
         r.last_watered, r.recording_at, 
         b.first_name AS botanist_first_name, b.last_name AS botanist_last_name,
         b.email AS botanist_email, b.phone AS botanist_phone
     FROM gamma.plant p
     JOIN gamma.recording r ON p.plant_id = r.plant_id
-    JOIN gamma.botanist b ON p.botanist_id = b.botanist_id"""
+    JOIN gamma.botanist b ON p.botanist_id = b.botanist_id
+    """
 
     try:
-        complete_df = pd.read_sql(query, connection)
+        dataframe = pd.read_sql(query, db_connectionn)
         logging.info("Data successfully loaded into DataFrame.")
-        connection.close()
+        db_connectionn.close()
         logging.info("Database connection closed.")
-        return complete_df
+        return dataframe
     except pymssql.DatabaseError as e:
         logging.error("Database error during data extraction: %s", e)
         raise
@@ -74,13 +87,14 @@ def save_to_parquet(dataframe: pd.DataFrame, file_date: str) -> None:
         raise
 
 
-def upload_to_s3(local_file: str, bucket: str, key: str) -> None:
+def upload_to_s3(parquet_file: str, bucket: str, s3_key: str) -> None:
     """Uploads a local file to S3."""
     try:
         s3_client = boto3.client("s3")
-        s3_client.upload_file(local_file, bucket, key)
-        logging.info(f"""File successfully uploaded to S3 bucket '{
-                     bucket}' with key '{key}'.""")
+        s3_client.upload_file(parquet_file, bucket, s3_key)
+        logging.info(
+            "File successfully uploaded to S3 bucket '%s' with key '%s'.", bucket, s3_key
+        )
     except FileNotFoundError as e:
         logging.error("File not found for S3 upload: %s", e)
         raise
@@ -93,20 +107,20 @@ def upload_to_s3(local_file: str, bucket: str, key: str) -> None:
 
 
 if __name__ == "__main__":
-    connection = get_db_connection()
-    complete_dataframe = load_data_to_dataframe(connection)
-    current_date = datetime.now().strftime("%Y-%m-%d")
+    db_connection = get_db_connection()
+    complete_dataframe = load_data_to_dataframe(db_connection)
 
-    local_parquet_file = save_to_parquet(complete_dataframe, current_date)
-    s3_key = f"{S3_KEY_PREFIX}{current_date}.parquet"
+    CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
+    PARQUET_FILE = save_to_parquet(complete_dataframe, CURRENT_DATE)
+    S3_KEY = f"{S3_KEY_PREFIX}{CURRENT_DATE}.parquet"
 
-    if not isinstance(local_parquet_file, str):
+    if not isinstance(PARQUET_FILE, str):
         raise ValueError(f"""Expected string for local file, got {
-                         type(local_parquet_file)}""")
+                         type(PARQUET_FILE)}""")
 
-    upload_to_s3(local_parquet_file, S3_BUCKET, s3_key)
+    upload_to_s3(PARQUET_FILE, S3_BUCKET, S3_KEY)
 
-    if os.path.exists(local_parquet_file):
-        os.remove(local_parquet_file)
+    if os.path.exists(PARQUET_FILE):
+        os.remove(PARQUET_FILE)
         logging.info("Temporary Parquet file removed: %s",
-                     local_parquet_file)
+                     PARQUET_FILE)
