@@ -8,4 +8,4 @@
 .terraform
 *.tfstate
 *.csv
-terraform/terraform.tfstate.backup
+*.tfstate.backup
