@@ -37,6 +37,8 @@ jobs:
         run: pip3 install -r requirements.txt 
 
       - name: Run tests
+        env : 
+          SCHEMA_NAME : ${{ secrets.SCHEMA_NAME }}
         run : pytest 
   lint:
     runs-on: ubuntu-latest
