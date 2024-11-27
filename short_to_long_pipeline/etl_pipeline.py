@@ -29,12 +29,6 @@ DB_CONFIG = {
     "port": os.getenv("DB_PORT")
 }
 
-AWS_CREDENTIALS = {
-    "aws_access_key_id": os.getenv("ACCESS_KEY_ID"),
-    "aws_secret_access_key": os.getenv("SECRET_ACCESS_KEY"),
-    "region_name": os.getenv("AWS_REGION", "eu-west-2"),
-}
-
 S3_BUCKET = os.getenv("S3_BUCKET")
 S3_KEY_PREFIX = os.getenv("S3_KEY", "plant_data/")
 
