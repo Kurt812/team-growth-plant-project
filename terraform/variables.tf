@@ -49,11 +49,3 @@ variable "environment_variables" {
   description = "List of environment variables for the container"
   type        = map(string)
 }
-
-
-# DB_HOST="c14-plants.c57vkec7dkkx.eu-west-2.rds.amazonaws.com"
-# DB_PORT="1433"
-# DB_PASSWORD="gamma1"
-# DB_USER="gamma"
-# DB_NAME="plants"
-# SCHEMA_NAME="gamma"
