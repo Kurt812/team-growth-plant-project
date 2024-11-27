@@ -66,3 +66,21 @@ resource "aws_lambda_function" "c14-team-growth-lambda" {
   }
 }
 
+resource "aws_cloudwatch_event_rule" "every_minute_schedule" {
+  name                = "c14-team-growth-lambda-schedule"
+  schedule_expression = "rate(1 minute)"
+}
+
+resource "aws_cloudwatch_event_target" "team_growth_trigger_lambda" {
+  rule      = aws_cloudwatch_event_rule.every_minute_schedule.name
+  target_id = "c14-team-growth-lambda"
+  arn       = aws_lambda_function.c14_team_growth_lambda.arn
+}
+
+resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.c14_team_growth_lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_minute_schedule.arn
+}
