@@ -208,8 +208,8 @@ class TestLoadScript(unittest.TestCase):
             END
             """,
             (
-                "Jakub", "Poskrop", "jakub@example.com", "1234567890",
-                "Jakub", "Poskrop", "jakub@example.com", "1234567890"
+                'Ellie', 'Bradley', 'ellie@example.com', '0987654321',
+                'Ellie', 'Bradley', 'ellie@example.com', '0987654321'
             )
         )
 
@@ -242,7 +242,7 @@ class TestLoadScript(unittest.TestCase):
                              AND email = %s AND phone = %s), %s)
             END
             """,
-            (1, 1, "Ellie", "Bradley", "ellie@example.com", "1234567890", "Rose")
+            (2, 2, 'Kurt', 'Martin-Brown', 'kurt@example.com', '0987654321', 'Tulip')
         )
 
     def test_insert_recordings(self):
@@ -266,7 +266,7 @@ class TestLoadScript(unittest.TestCase):
             (plant_id, soil_moisture, temperature, last_watered, recording_at)
             VALUES (%s, %s, %s, %s, %s)
             """,
-            (1, 50, 20, "2023-11-01", "2023-11-25")
+            (2, 60, 25, '2023-11-02', '2023-11-26')
         )
 
 
