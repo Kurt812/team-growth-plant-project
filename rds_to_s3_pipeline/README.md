@@ -3,7 +3,7 @@ ETL Pipeline - RDS to S3
 
 Overview
 --------
-This folder implements an **ETL (Extract, Transform, Load)** pipeline designed to extract plant data from an RDS database, transform the data into a structured format, and upload it as a Parquet file to an AWS S3 bucket.
+This folder implements an ETL (Extract, Transform, Load) pipeline that extracts short-term plant data stored for 24 hours from an RDS database, transforms it into a structured format, and uploads it as a Parquet file to an AWS S3 bucket for real-time monitoring and analysis.
 
 
 Features
