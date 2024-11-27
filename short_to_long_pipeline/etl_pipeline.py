@@ -39,20 +39,6 @@ S3_BUCKET = os.getenv("S3_BUCKET")
 S3_KEY_PREFIX = os.getenv("S3_KEY", "plant_data/")
 
 
-def get_aws_client(service_name: str) -> boto3.client:
-    """Creates a Boto3 client using credentials from .env."""
-    try:
-        client = boto3.client(service_name, **AWS_CREDENTIALS)
-        logging.info("AWS client for %s created successfully.", service_name)
-        return client
-    except NoCredentialsError as e:
-        logging.error("AWS credentials not found: %s", e)
-        raise
-    except PartialCredentialsError as e:
-        logging.error("Incomplete AWS credentials: %s", e)
-        raise
-
-
 def get_db_connection() -> pymssql.Connection:
     """Establish a connection to the SQL Server database using pymssql."""
     try:
@@ -110,7 +96,7 @@ def save_to_parquet(dataframe: pd.DataFrame, file_date: str) -> None:
 def upload_to_s3(parquet_file: str, bucket: str, s3_key: str) -> None:
     """Uploads a local file to S3."""
     try:
-        s3_client = get_aws_client("s3")
+        s3_client = boto3.client("s3")
         s3_client.upload_file(parquet_file, bucket, s3_key)
         logging.info(
             "File successfully uploaded to S3 bucket '%s' with key '%s'.", bucket, s3_key
