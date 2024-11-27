@@ -1,0 +1,9 @@
+FROM python:3.10
+
+COPY requirements.txt .
+
+RUN pip3 install -r requirements.txt
+
+COPY short_to_long_pipeline/etl_pipeline.py .
+
+CMD ["python3", "etl_pipeline.py"] 
