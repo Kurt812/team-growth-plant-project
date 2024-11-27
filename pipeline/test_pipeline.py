@@ -94,8 +94,8 @@ class TestTransformScript(unittest.TestCase):
             "plant_name": ["Rose", "Tulip", "Lily"],
             "soil_moisture": [50, "invalid", 30],
             "temperature": [20, 25, "invalid"],
-            "last_watered": ["2023-11-01", "invalid_date", "2023-11-15"],
-            "recording_at": ["2023-11-25", "invalid_date", "2023-11-25"],
+            "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT", "invalid_date", "Wed, 27 Nov 2024 14:29:54 GMT"],
+            "recording_at": ["2024-11-26 15:01:07", "invalid_date", "2024-11-27 16:02:48"],
             "botanist_first_name": ["Alice", "Bob", None],
             "botanist_last_name": ["Smith", "Johnson", "Brown"],
             "botanist_email": ["alice@example.com", "bob@example.com", None],
@@ -123,8 +123,8 @@ class TestTransformScript(unittest.TestCase):
             "plant_name": ["Rose", "Tulip", "Lily"],
             "soil_moisture": [50, 120, -10],  # 120 and -10 are invalid
             "temperature": [20, 25, 15],
-            "last_watered": ["2023-11-01", "2023-11-15", "2023-11-15"],
-            "recording_at": ["2023-11-25", "2023-11-25", "2023-11-25"],
+            "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT", "Tue, 26 Nov 2024 14:10:54 GMT", "Tue, 26 Nov 2024 14:10:54 GMT"],
+            "recording_at": ["2024-11-27 16:02:48", "2024-11-27 16:02:48", "2024-11-27 16:02:48"],
             "botanist_first_name": ["Alice", "Bob", "Charlie"],
             "botanist_last_name": ["Smith", "Johnson", "Brown"],
             "botanist_email": ["alice@example.com", "bob@example.com", "charlie@example.com"],
@@ -143,8 +143,9 @@ class TestTransformScript(unittest.TestCase):
             "plant_name": ["Rose", "Tulip"],
             "soil_moisture": [50, 60],
             "temperature": [20, 25],
-            "last_watered": ["2023-11-15", "2023-11-15"],
-            "recording_at": ["2023-11-25", "invalid_date"],  # One invalid date
+            "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT", "Tue, 26 Nov 2024 14:10:54 GMT"],
+            # One invalid date
+            "recording_at": ["2024-11-27 16:02:48", "invalid_date"],
             "botanist_first_name": ["Alice", "Bob"],
             "botanist_last_name": ["Smith", "Johnson"],
             "botanist_email": ["alice@example.com", "bob@example.com"],
