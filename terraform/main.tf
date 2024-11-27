@@ -27,7 +27,7 @@ resource "aws_s3_bucket" "long_term_storage" {
   }
 }
 
-resource "aws_iam_role" "c14-team-growth-lambda-role" {
+resource "aws_iam_role" "c14_team_growth_lambda_role" {
     name = "c14-team-growth-lambda-role"
     assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -44,17 +44,17 @@ resource "aws_iam_role" "c14-team-growth-lambda-role" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
-    role       = aws_iam_role.c14-team-growth-lambda-role.name
+    role       = aws_iam_role.c14_team_growth_lambda_role.name
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
-     role       = aws_iam_role.c14-team-growth-lambda-role.name
+     role       = aws_iam_role.c14_team_growth_lambda_role.name
      policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource "aws_lambda_function" "c14_team_growth_lambda" {
     function_name = "c14-team-growth-lambda"
-    role          = aws_iam_role.c14-team-growth-lambda-role.arn
+    role          = aws_iam_role.c14_team_growth_lambda_role.arn
     package_type  = "Image" 
     image_uri = var.lambda_ecr_uri
     environment {
