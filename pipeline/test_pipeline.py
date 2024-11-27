@@ -1,4 +1,5 @@
 """Tests for extracting raw data from API, transforming and loading into database."""
+import os
 import unittest
 from unittest.mock import MagicMock, patch
 import requests
@@ -182,6 +183,7 @@ class TestLoadScript(unittest.TestCase):
             get_db_connection()
         mock_connect.assert_called_once()
 
+    @patch.dict(os.environ, {"SCHEMA_NAME": 'gamma'})
     def test_insert_botanists(self):
         """Test inserting botanists into the database."""
         mock_cursor = MagicMock()
@@ -213,6 +215,7 @@ class TestLoadScript(unittest.TestCase):
             )
         )
 
+    @patch.dict(os.environ, {"SCHEMA_NAME": 'gamma'})
     def test_insert_plants(self):
         """Test inserting plants into the database."""
         mock_cursor = MagicMock()
@@ -245,6 +248,7 @@ class TestLoadScript(unittest.TestCase):
             (2, 2, 'Kurt', 'Martin-Brown', 'kurt@example.com', '0987654321', 'Tulip')
         )
 
+    @patch.dict(os.environ, {"SCHEMA_NAME": 'gamma'})
     def test_insert_recordings(self):
         """Test inserting recordings into the database."""
         mock_cursor = MagicMock()
