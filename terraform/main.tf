@@ -97,8 +97,8 @@ resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.c14_team_growth_lambda.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.every_minute_schedule.arn
+  principal     = "scheduler.amazonaws.com"
+  source_arn    = aws_scheduler_schedule.team_growth_every_minute_schedule.arn
 }
 
 data "aws_iam_role" "ecs_task_execution_role" {
