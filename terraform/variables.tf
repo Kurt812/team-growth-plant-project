@@ -55,3 +55,9 @@ variable "environment_variables" {
   description = "List of environment variables for the container"
   type        = map(string)
 }
+
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-west-2" # Or your desired default region
+}
