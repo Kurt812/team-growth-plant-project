@@ -10,7 +10,8 @@ resource "aws_scheduler_schedule" "pipeline_schedule" {
     arn = "arn:aws:ecs:eu-west-2:129033205317:cluster/c14-ecs-cluster"
     role_arn = aws_iam_role.eventbridge_role.arn
     ecs_parameters {
-        task_definition_arn = "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl:4"
+        task_definition_arn = "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl:5" # Change to latest revision 
+        task_count = 1
         launch_type = "FARGATE"  
         network_configuration {
             subnets = [
@@ -74,6 +75,41 @@ resource "aws_iam_role_policy" "eventbridge_ecs_policy" {
           "ecr:BatchCheckLayerAvailability",
         ],
         Resource = "arn:aws:ecr:eu-west-2:129033205317:repository/c14-team-growth-lmnh"
+      }
+    ]
+  })
+}
+resource "aws_iam_role_policy" "run_task_permission" {
+  name = "c14-team-growth-run_task-policy"
+  role = aws_iam_role.eventbridge_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ecs:RunTask"
+        ],
+        Resource = [
+          "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl:*",
+          "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl"
+        ],
+        Condition = {
+          ArnLike = {
+            "ecs:cluster" = "arn:aws:ecs:eu-west-2:129033205317:cluster/c14-ecs-cluster"
+          }
+        }
+      },
+      {
+        Effect = "Allow",
+        Action = "iam:PassRole",
+        Resource = "*",
+        Condition = {
+          StringLike = {
+            "iam:PassedToService" = "ecs-tasks.amazonaws.com"
+          }
+        }
       }
     ]
   })
