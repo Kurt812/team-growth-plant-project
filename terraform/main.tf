@@ -38,4 +38,3 @@ resource "aws_security_group" "ecs_task_sg" {
     Name = "ecs_task_sg"
   }
 }
-

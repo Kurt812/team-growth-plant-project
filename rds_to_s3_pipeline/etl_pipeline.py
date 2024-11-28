@@ -95,6 +95,23 @@ def load_data_to_dataframe(db_connection: pymssql.Connection) -> pd.DataFrame:
         raise
 
 
+def clear_rds(db_connection: pymssql.Connection) -> None:
+    query = "TRUNCATE TABLE gamma.recordings;"
+
+    try:
+        with db_connection.cursor() as cursor:
+            cursor.execute(query)
+            db_connection.commit()
+        logging.info(
+            "All gamma.recordings table successfully dropped from the database.")
+    except pymssql.DatabaseError as e:
+        logging.error("Database error during table deletion: %s", e)
+        raise
+    finally:
+        db_connection.close()
+        logging.info("Database connection closed.")
+
+
 def save_to_parquet(dataframe: pd.DataFrame, file_date: str) -> None:
     """Save the DataFrame to a Parquet file."""
     local_file = f"{file_date}.parquet"
@@ -147,8 +164,13 @@ def run_pipeline():
     if os.path.exists(parquet_file):
         os.remove(parquet_file)
         logging.info("Temporary Parquet file removed: %s",
-                     parquet_file)
+                     PARQUET_FILE)
+
+    clear_rds(db_connection)
+
+                     
 
 
 if __name__ == "__main__":
     run_pipeline()
+
