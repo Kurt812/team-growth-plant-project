@@ -93,7 +93,7 @@ resource "aws_iam_role" "ecs_task_role" {
 
 resource "aws_iam_policy" "ecs_task_s3_policy" {
   name        = "c14-team-growth-ecs-task-s3-policy"
-  description = "Allow ECS tasks to upload files to the S3 bucket"
+  description = "Allow ECS tasks to upload plant data files to the S3 bucket"
 
   policy = jsonencode({
     Version : "2012-10-17",
