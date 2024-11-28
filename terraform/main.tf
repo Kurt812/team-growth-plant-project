@@ -70,16 +70,26 @@ resource "aws_lambda_function" "c14-team-growth-lambda" {
   }
 }
 
-# EventBridge for scheduling Lambda (Every Minute)
-resource "aws_cloudwatch_event_rule" "team_growth_every_minute_schedule" {
-  name                = "c14-team-growth-lambda-schedule"
-  schedule_expression = "cron(0/1 * * * ? *)"
+resource "aws_scheduler_schedule_group" "team_growth_schedule_group" {
+  name = "team-growth-schedule-group"
 }
 
-resource "aws_cloudwatch_event_target" "team_growth_trigger_lambda" {
-  rule      = aws_cloudwatch_event_rule.every_minute_schedule.name
-  target_id = "c14-team-growth-lambda"
-  arn       = aws_lambda_function.c14_team_growth_lambda.arn
+# EventBridge Scheduler for Lambda (Every Minute)
+resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
+  name                = "c14-team-growth-lambda-schedule"
+  group_name          = aws_scheduler_schedule_group.team_growth_schedule_group.name
+  schedule_expression = "cron(0/1 * * * ? *)" # Every minute
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  target {
+    arn      = aws_lambda_function.c14_team_growth_lambda.arn
+    role_arn = aws_iam_role.c14-team-growth-lambda-role.arn
+    input    = jsonencode({
+      action = "Invoke Lambda"
+    })
+  }
 }
 
 resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
