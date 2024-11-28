@@ -151,9 +151,9 @@ def run_pipeline():
     connection = get_db_connection()
     complete_dataframe = load_data_to_dataframe(connection)
 
-    curent_date = datetime.now().strftime("%Y-%m-%d")
-    parquet_file = save_to_parquet(complete_dataframe, curent_date)
-    s3_key = f"{S3_KEY_PREFIX}{curent_date}.parquet"
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    parquet_file = save_to_parquet(complete_dataframe, current_date)
+    s3_key = f"{S3_KEY_PREFIX}{current_date}.parquet"
 
     if not isinstance(parquet_file, str):
         raise ValueError(f"""Expected string for local file, got {

@@ -10,7 +10,7 @@ resource "aws_scheduler_schedule" "pipeline_schedule" {
     arn = "arn:aws:ecs:eu-west-2:129033205317:cluster/c14-ecs-cluster"
     role_arn = aws_iam_role.eventbridge_role.arn
     ecs_parameters {
-        task_definition_arn = "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl:4"
+        task_definition_arn = "arn:aws:ecs:eu-west-2:129033205317:task-definition/c14-team-growth-rds-to-s3-etl:7"
         launch_type = "FARGATE"  
         network_configuration {
             subnets = [
