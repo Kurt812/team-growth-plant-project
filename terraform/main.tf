@@ -2,6 +2,7 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+# ECR Repository
 resource "aws_ecr_repository" "c14_team_growth_lmnh" {
   encryption_configuration {
     encryption_type = "AES256"
@@ -19,6 +20,7 @@ output "ecr_repository_id" {
   value = aws_ecr_repository.c14_team_growth_lmnh.id
 }
 
+# S3 Bucket for Long-Term Storage
 resource "aws_s3_bucket" "long_term_storage" {
   bucket = "c14-team-growth-storage"                   
 
@@ -27,6 +29,7 @@ resource "aws_s3_bucket" "long_term_storage" {
   }
 }
 
+# IAM Role for Lambda
 resource "aws_iam_role" "c14-team-growth-lambda-role" {
     name = "c14-team-growth-lambda-role"
     assume_role_policy = jsonencode({
@@ -52,6 +55,7 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
      policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+# Lambda Function
 resource "aws_lambda_function" "c14-team-growth-lambda" {
     function_name = "c14-team-growth-lambda"
     role          = aws_iam_role.c14-team-growth-lambda-role.arn
@@ -66,3 +70,22 @@ resource "aws_lambda_function" "c14-team-growth-lambda" {
   }
 }
 
+# EventBridge for scheduling Lambda (Every Minute)
+resource "aws_cloudwatch_event_rule" "team_growth_every_minute_schedule" {
+  name                = "c14-team-growth-lambda-schedule"
+  schedule_expression = "cron(0/1 * * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "team_growth_trigger_lambda" {
+  rule      = aws_cloudwatch_event_rule.every_minute_schedule.name
+  target_id = "c14-team-growth-lambda"
+  arn       = aws_lambda_function.c14_team_growth_lambda.arn
+}
+
+resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
+  statement_id  = "AllowExecutionFromEventBridge"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.c14_team_growth_lambda.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.every_minute_schedule.arn
+}
