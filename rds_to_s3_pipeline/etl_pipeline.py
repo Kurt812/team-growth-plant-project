@@ -164,13 +164,10 @@ def run_pipeline():
     if os.path.exists(parquet_file):
         os.remove(parquet_file)
         logging.info("Temporary Parquet file removed: %s",
-                     PARQUET_FILE)
+                     parquet_file)
 
-    clear_rds(db_connection)
-
-                     
+    clear_rds(connection)
 
 
 if __name__ == "__main__":
     run_pipeline()
-
