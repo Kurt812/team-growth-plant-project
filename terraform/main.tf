@@ -68,6 +68,7 @@ resource "aws_lambda_function" "c14_team_growth_lambda" {
     subnet_ids         = ["subnet-0497831b67192adc2","subnet-0acda1bd2efbf3922","subnet-0465f224c7432a02e"]
     security_group_ids = ["sg-09f0012e36bb2a877"]
   }
+    timeout = 180
 }
 
 
@@ -79,14 +80,14 @@ resource "aws_scheduler_schedule_group" "team_growth_schedule_group" {
 resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   name                = "c14-team-growth-lambda-schedule"
   group_name          = aws_scheduler_schedule_group.team_growth_schedule_group.name
-  schedule_expression = "cron(0/1 * * * ? *)" # Every minute
+  schedule_expression = "cron(* * * * ? *)" # Every minute
   flexible_time_window {
     mode = "OFF"
   }
 
   target {
     arn      = aws_lambda_function.c14_team_growth_lambda.arn
-    role_arn = aws_iam_role.c14-team-growth-lambda-role.arn
+    role_arn = aws_iam_role.c14_team_growth_lambda_role.arn
     input    = jsonencode({
       action = "Invoke Lambda"
     })
@@ -98,7 +99,7 @@ resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.c14_team_growth_lambda.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.every_minute_schedule.arn
+  source_arn    = aws_scheduler_schedule.team_growth_every_minute_schedule.arn
 }
 
 data "aws_iam_role" "ecs_task_execution_role" {
