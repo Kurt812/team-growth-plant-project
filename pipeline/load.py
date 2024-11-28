@@ -25,7 +25,7 @@ SCHEMA_NAME = os.getenv("SCHEMA_NAME")
 def get_db_connection() -> pymssql.Connection:
     """Establish a connection to the SQL Server database using pymssql."""
     try:
-        conn = pymssql.connect(
+        db_connection = pymssql.connect(
             server=DB_CONFIG["host"],
             user=DB_CONFIG["username"],
             password=DB_CONFIG["password"],
@@ -33,7 +33,7 @@ def get_db_connection() -> pymssql.Connection:
             port=DB_CONFIG["port"]
         )
         logging.info("Database connection established.")
-        return conn
+        return db_connection
     except pymssql.DatabaseError as e:
         logging.error("Failed to connect to the database: %s", e)
         raise

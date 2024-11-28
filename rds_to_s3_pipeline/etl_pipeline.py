@@ -56,7 +56,7 @@ def get_aws_client(service_name: str) -> boto3.client:
 def get_db_connection() -> pymssql.Connection:
     """Establish a connection to the SQL Server database using pymssql."""
     try:
-        connection = pymssql.connect(
+        db_connection = pymssql.connect(
             server=DB_CONFIG["host"],
             user=DB_CONFIG["username"],
             password=DB_CONFIG["password"],
@@ -64,13 +64,13 @@ def get_db_connection() -> pymssql.Connection:
             port=DB_CONFIG["port"]
         )
         logging.info("Database connection established.")
-        return connection
+        return db_connection
     except pymssql.DatabaseError as e:
         logging.error("Failed to connect to the database: %s", e)
         raise
 
 
-def load_data_to_dataframe(db_connectionn: pymssql.Connection) -> pd.DataFrame:
+def load_data_to_dataframe(db_connection: pymssql.Connection) -> pd.DataFrame:
     """Extracts data from the RDS database into a pandas DataFrame."""
 
     query = """
@@ -85,9 +85,9 @@ def load_data_to_dataframe(db_connectionn: pymssql.Connection) -> pd.DataFrame:
     """
 
     try:
-        dataframe = pd.read_sql(query, db_connectionn)
+        dataframe = pd.read_sql(query, db_connection)
         logging.info("Data successfully loaded into DataFrame.")
-        db_connectionn.close()
+        db_connection.close()
         logging.info("Database connection closed.")
         return dataframe
     except pymssql.DatabaseError as e:
@@ -143,23 +143,34 @@ def upload_to_s3(parquet_file: str, bucket: str, s3_key: str) -> None:
         raise
 
 
-if __name__ == "__main__":
-    db_connection = get_db_connection()
-    complete_dataframe = load_data_to_dataframe(db_connection)
+def run_pipeline():
+    '''
+    Function that runs the data pipeline from the short term storage (RDS) 
+    to the long term storage (S3)
+    '''
+    connection = get_db_connection()
+    complete_dataframe = load_data_to_dataframe(connection)
 
-    CURRENT_DATE = datetime.now().strftime("%Y-%m-%d")
-    PARQUET_FILE = save_to_parquet(complete_dataframe, CURRENT_DATE)
-    S3_KEY = f"{S3_KEY_PREFIX}{CURRENT_DATE}.parquet"
+    curent_date = datetime.now().strftime("%Y-%m-%d")
+    parquet_file = save_to_parquet(complete_dataframe, curent_date)
+    s3_key = f"{S3_KEY_PREFIX}{curent_date}.parquet"
 
-    if not isinstance(PARQUET_FILE, str):
+    if not isinstance(parquet_file, str):
         raise ValueError(f"""Expected string for local file, got {
-                         type(PARQUET_FILE)}""")
+                         type(parquet_file)}""")
 
-    upload_to_s3(PARQUET_FILE, S3_BUCKET, S3_KEY)
+    upload_to_s3(parquet_file, S3_BUCKET, s3_key)
 
-    if os.path.exists(PARQUET_FILE):
-        os.remove(PARQUET_FILE)
+    if os.path.exists(parquet_file):
+        os.remove(parquet_file)
         logging.info("Temporary Parquet file removed: %s",
                      PARQUET_FILE)
 
     clear_rds(db_connection)
+
+                     
+
+
+if __name__ == "__main__":
+    run_pipeline()
+
