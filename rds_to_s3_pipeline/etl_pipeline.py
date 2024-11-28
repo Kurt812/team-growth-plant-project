@@ -95,6 +95,20 @@ def load_data_to_dataframe(db_connectionn: pymssql.Connection) -> pd.DataFrame:
         raise
 
 
+def clear_rds(db_connectionn: pymssql.Connection) -> None:
+    query = "DELETE FROM gamma.recordings;"
+
+    try:
+        dataframe = pd.read_sql(query, db_connectionn)
+        logging.info("Data successfully loaded into DataFrame.")
+        db_connectionn.close()
+        logging.info("Database connection closed.")
+        return dataframe
+    except pymssql.DatabaseError as e:
+        logging.error("Database error during data extraction: %s", e)
+        raise
+
+
 def save_to_parquet(dataframe: pd.DataFrame, file_date: str) -> None:
     """Save the DataFrame to a Parquet file."""
     local_file = f"{file_date}.parquet"
@@ -144,3 +158,5 @@ if __name__ == "__main__":
         os.remove(PARQUET_FILE)
         logging.info("Temporary Parquet file removed: %s",
                      PARQUET_FILE)
+
+    clear_rds(db_connection)
