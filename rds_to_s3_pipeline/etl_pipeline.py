@@ -95,18 +95,21 @@ def load_data_to_dataframe(db_connectionn: pymssql.Connection) -> pd.DataFrame:
         raise
 
 
-def clear_rds(db_connectionn: pymssql.Connection) -> None:
-    query = "DELETE FROM gamma.recordings;"
+def clear_rds(db_connection: pymssql.Connection) -> None:
+    query = "TRUNCATE TABLE gamma.recordings;"
 
     try:
-        dataframe = pd.read_sql(query, db_connectionn)
-        logging.info("Data successfully loaded into DataFrame.")
-        db_connectionn.close()
-        logging.info("Database connection closed.")
-        return dataframe
+        with db_connection.cursor() as cursor:
+            cursor.execute(query)
+            db_connection.commit()
+        logging.info(
+            "All gamma.recordings table successfully dropped from the database.")
     except pymssql.DatabaseError as e:
-        logging.error("Database error during data extraction: %s", e)
+        logging.error("Database error during table deletion: %s", e)
         raise
+    finally:
+        db_connection.close()
+        logging.info("Database connection closed.")
 
 
 def save_to_parquet(dataframe: pd.DataFrame, file_date: str) -> None:
