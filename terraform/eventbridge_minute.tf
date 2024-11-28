@@ -22,7 +22,6 @@ resource "aws_iam_role" "c14_team_growth_lambda_eventbridge_role" {
   })
 }
 
-
 # Attach AWS Lambda Basic Execution Role to the IAM Role (Renamed)
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution_eventbridge" {
   role       = aws_iam_role.c14_team_growth_lambda_eventbridge_role.name
@@ -35,6 +34,27 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_access_eventbridge" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+# Attach custom Invoke Lambda policy
+resource "aws_iam_role_policy" "invoke_lambda_permission" {
+  name = "c14-team-growth-lambda-invoke-policy"
+  role = aws_iam_role.c14_team_growth_lambda_eventbridge_role.name
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "lambda:InvokeFunction"
+        ],
+        Resource = [
+          "arn:aws:lambda:eu-west-2:129033205317:function:c14-team-growth-lambda:*",
+          "arn:aws:lambda:eu-west-2:129033205317:function:c14-team-growth-lambda"
+        ]
+      }
+    ]
+  })
+}
 # EventBridge Scheduler to trigger Lambda every minute
 resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   name                = "c14-team-growth-lambda-schedule"
