@@ -1,7 +1,7 @@
 """Transforms the plant data to make it ready for loading"""
-import pandas as pd
-import logging
 import os
+import logging
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO)
 
