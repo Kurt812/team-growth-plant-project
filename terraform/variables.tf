@@ -1,6 +1,12 @@
 variable "lambda_ecr_uri" {
-    description = "ECR image URI for the minute pipeline"
-    type = string
+  description = "ECR image URI for the minute pipeline"
+  type = string
+}
+
+variable "vpc_id" {
+  description = "ID of the VPC"
+  type = string
+  sensitive = true
 }
 
 variable "DB_HOST" {

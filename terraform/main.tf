@@ -115,6 +115,32 @@ resource "aws_iam_role_policy_attachment" "ecs_task_s3_policy_attachment" {
   policy_arn = aws_iam_policy.ecs_task_s3_policy.arn
 }
 
+resource "aws_security_group" "ecs_task_sg" {
+  name        = "c14-team-growth-etl-security"
+  description = "Security group for SQL Server allowing access only on port 1433"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description      = "Allow SQL Server access"
+    from_port        = 1433
+    to_port          = 1433
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description      = "Allow all outbound traffic"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ecs_task_sg"
+  }
+}
+
 resource "aws_ecs_task_definition" "c14_team_growth_rds_to_s3_etl" {
   family                   = "c14-team-growth-rds-to-s3-etl"
   requires_compatibilities = ["FARGATE"]
@@ -158,5 +184,7 @@ resource "aws_ecs_task_definition" "c14_team_growth_rds_to_s3_etl" {
     operating_system_family = "LINUX"
   }
 }
+
+
 
 
