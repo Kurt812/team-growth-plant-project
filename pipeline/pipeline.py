@@ -1,6 +1,5 @@
 """Pipeline script to extract plant data from an API, transform it, and load it into a database."""
 import logging
-import time
 import pandas as pd
 from dotenv import load_dotenv
 import extract
@@ -72,6 +71,4 @@ def lambda_handler(event, context) -> None:
 
 
 if __name__ == "__main__":
-    while True:
-        run_pipeline()
-        time.sleep(60)
+    run_pipeline()
