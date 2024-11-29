@@ -132,8 +132,9 @@ Why OOP was not Used in This Attempt:
 - Data Size and Complexity: The current scale and complexity of the data did not necessitate the use of OOP. As the project evolves, and the system handles more complex interactions, OOP could become more beneficial.
 
 Contributors
-Project Manager - [S1mpySloth](https://github.com/S1mpySloth)
-Architect - [Kurt812](https://github.com/Kurt812)
-Architect - [ebradley12](https://github.com/ebradley12)
-Quality Assurance - [Jakub-Poskrop](https://github.com/Jakub-Poskrop)
+
+Project Manager - [S1mpySloth](https://github.com/S1mpySloth)  
+Architect - [Kurt812](https://github.com/Kurt812)  
+Architect - [ebradley12](https://github.com/ebradley12)  
+Quality Assurance - [Jakub-Poskrop](https://github.com/Jakub-Poskrop)  
 
