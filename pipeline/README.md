@@ -4,8 +4,7 @@ Plant Data ETL Pipeline - API Endpoint to RDS
 Overview
 --------
 This folder implements an **ETL (Extract, Transform, Load)** pipeline for plant data. The pipeline retrieves data 
-from a public API, cleans and transforms the data, and loads it into a SQL Server database. The scripts are modular and 
-handle each phase of the ETL process independently.
+from a public API, cleans and transforms the data, and loads it into a SQL Server database. The scripts are modular and handle each phase of the ETL process independently.
 
 Architecture
 ------------
@@ -68,13 +67,39 @@ How to Run the Pipeline
 
 2. **Set Up Environment Variables**:
     Use a `.env` file to provide database credentials and schema information:
-    DB_HOST=<your_database_host> DB_NAME=<your_database_name> DB_USER=<your_database_user> DB_PASSWORD=<your_database_password> DB_PORT=<your_database_port> SCHEMA_NAME=<your_schema_name>
+    DB_HOST=<your_database_host>
+    DB_NAME=<your_database_name>
+    DB_USER=<your_database_user>
+    DB_PASSWORD=<your_database_password>
+    DB_PORT=<your_database_port>
+    SCHEMA_NAME=<your_schema_name>
 
 3. **Run the Pipeline**:
     Execute the pipeline by running:
     ```bash
     python3 pipeline.py
     ```
+
+Docker Deployment
+-------
+The ETL pipeline can also be run as a Docker container using the minute_pipeline_dockerfile.
+
+**Building the Docker Image**
+    Navigate to the project root directory and run the following command:
+    ```bash
+    docker build --file pipeline/minute_pipeline_dockerfile -t team_growth_pipeline:v1.0 . --platform "linux/amd64"
+    ```
+
+    Alternatively, if you are in the pipeline directory:
+    ```bash
+    docker build --file minute_pipeline_dockerfile -t team_growth_pipeline:v1.0 .. --platform "linux/amd64"
+    ```
+**Running the Docker Container**
+    To run the Docker container:
+    ```bash
+    docker run -p 443:443 --env-file .env team_growth_pipeline:v1.0
+    ```
+
 
 
 Testing
@@ -90,5 +115,6 @@ Folder Structure
 - **extract.py**: Handles data extraction from the API.
 - **transform.py**: Handles data cleaning and transformation.
 - **load.py**: Handles data loading into the database.
+- **minute_pipeline_dockerfile**: Dockerfile for deploying the ETL pipeline as a container.
 - **test_pipeline.py**: Contains unit tests for all pipeline components.
 

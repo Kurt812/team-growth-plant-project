@@ -63,7 +63,7 @@ The application will be available at http://localhost:8501.
 ### 1. Build the docker image:
 
 ```bash
-docker build -t plant-dashboard .
+docker build --file dashboard_dockerfile -t plant-dashboard ..
 ```
 
 ### 2. Run the Docker Container:
