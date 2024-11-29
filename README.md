@@ -125,14 +125,14 @@ The following technologies were used:
 5. Object-Oriented Programming (OOP) Integration
    - Future iterations could explore using OOP principles, treating entities such as plants and botanists as objects. This would provide a more modular and scalable codebase, improving maintainability and readability.
 
-Why OOP was not Used in This Attempt:
-
+## Why OOP was not Used in This Attempt:
+---
 - Simpler Implementation Needs: For the initial phase, the project’s requirements were straightforward, and procedural programming provided a faster and more direct approach.
 - Time Constraints: Implementing OOP requires additional time for designing and structuring classes, which was not feasible given the project timeline.
 - Data Size and Complexity: The current scale and complexity of the data did not necessitate the use of OOP. As the project evolves, and the system handles more complex interactions, OOP could become more beneficial.
 
-Contributors
-
+## Contributors
+---
 Project Manager - [S1mpySloth](https://github.com/S1mpySloth)  
 Architect - [Kurt812](https://github.com/Kurt812)  
 Architect - [ebradley12](https://github.com/ebradley12)  
