@@ -61,7 +61,7 @@ Loads the cleaned data into a SQL Server database.
 How to Run the Pipeline
 -----------------------
 1. **Install Dependencies**:
-   Ensure you have Python installed and set up a virtual environment. Install dependencies by running:
+   Ensure you have Python installed and set up a virtual environment(- Python 3.9) Install dependencies by running:
    ```bash
     pip3 install -r requirements.txt
     ```
