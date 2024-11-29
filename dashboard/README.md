@@ -56,7 +56,6 @@ pip install -r requirements.txt
 ```bash
 streamlit run app.py
 ```
-The application will be available at http://localhost:8501.
 
 ### Docker Deployment
 
@@ -71,7 +70,6 @@ docker build --file dashboard_dockerfile -t plant-dashboard ..
 ```bash
 docker run -p 8501:8501 --env-file .env plant-dashboard
 ```
-Access the dashboard at http://localhost:8501.
 
 ---
 
