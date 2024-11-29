@@ -1,16 +1,88 @@
 """Streamlit Dashboard for Plant Health Monitoring"""
+import os
 from io import BytesIO
 from datetime import datetime
 import pandas as pd
 import boto3
 import altair as alt
 import streamlit as st
+import pymssql
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 S3_BUCKET = "c14-team-growth-storage"
 FOLDER = "plant_data/"
+DB_CONFIG = {
+    "host": os.getenv("DB_HOST"),
+    "database": os.getenv("DB_NAME"),
+    "username": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "port": os.getenv("DB_PORT"),
+}
 
 st.title("🌱 Liverpool Natural History Museum - Plant Health Monitoring")
 st.write("Monitor real-time and historical plant health data from the botanical wing.")
+
+
+def get_rds_connection():
+    """Establish a connection to the RDS database."""
+    try:
+        conn = pymssql.connect(
+            server=DB_CONFIG["host"],
+            user=DB_CONFIG["username"],
+            password=DB_CONFIG["password"],
+            database=DB_CONFIG["database"],
+            port=DB_CONFIG["port"],
+        )
+        return conn
+    except pymssql.OperationalError as e:
+        st.error(f"Failed to connect to RDS: {e}")
+        return None
+
+
+def fetch_real_time_data_from_rds(selected_plant: str) -> pd.DataFrame:
+    """Fetch the latest real-time data for a specific plant."""
+    conn = get_rds_connection()
+    if not conn:
+        return pd.DataFrame()
+
+    query = f"""
+        SELECT 
+            p.plant_name,
+            r.soil_moisture,
+            r.temperature,
+            r.last_watered,
+            r.recording_at
+        FROM 
+            gamma.recording r
+        JOIN 
+            gamma.plant p
+        ON 
+            r.plant_id = p.plant_id
+        WHERE 
+            p.plant_name = '{selected_plant}'
+        ORDER BY 
+            r.recording_at DESC
+        OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+    """
+
+    dataframe = pd.read_sql(query, conn)
+    conn.close()
+    return dataframe
+
+
+def get_plant_names() -> list:
+    """Fetch a list of plant names from the database."""
+    conn = get_rds_connection()
+    if not conn:
+        return []
+
+    query = "SELECT DISTINCT plant_name FROM gamma.plant;"
+
+    dataframe = pd.read_sql(query, conn)
+    conn.close()
+    return dataframe["plant_name"].tolist()
 
 
 def get_file_key(date: str) -> str:
@@ -33,48 +105,26 @@ def fetch_data_from_s3(bucket: str, file_key: str) -> pd.DataFrame:
         return pd.DataFrame()
 
 
-def render_sidebar(dataframe: pd.DataFrame) -> tuple:
-    """Render the sidebar with date range and plant selection."""
-    st.sidebar.title("Filter Options")
-
-    start_date, end_date = st.sidebar.date_input(
-        "Select Date Range",
-        [datetime.today(), datetime.today()],
-    )
-    formatted_start_date = start_date.strftime("%Y-%m-%d")
-    formatted_end_date = end_date.strftime("%Y-%m-%d")
-
-    plant_list = dataframe["plant_name"].unique(
-    ).tolist() if not dataframe.empty else []
-    selected_plant = st.sidebar.selectbox(
-        "Select Plant by Name", options=plant_list
-    ) if plant_list else None
-
-    return formatted_start_date, formatted_end_date, selected_plant
-
-
-def render_real_time_dashboard(dataframe: pd.DataFrame):
+def render_real_time_dashboard():
     """Render the real-time data dashboard."""
+    plant_list = get_plant_names()
+    selected_plant = st.sidebar.selectbox("Select Plant by Name", plant_list)
 
-    if dataframe.empty or "plant_name" not in dataframe.columns:
-        st.warning("No real-time data available.")
+    if not selected_plant:
+        st.warning("Please select a plant to view real-time data.")
         return
 
-    selected_plant = st.sidebar.selectbox(
-        "Select Plant by Name", dataframe["plant_name"].unique()
-    )
-    display_real_time_data(dataframe, selected_plant)
-
-
-def display_real_time_data(dataframe: pd.DataFrame, selected_plant: str) -> None:
-    """Display the latest temperature and moisture readings for the selected plant."""
-    if selected_plant:
-        dataframe = dataframe[dataframe["plant_name"] == selected_plant]
+    dataframe = fetch_real_time_data_from_rds(selected_plant)
 
     if dataframe.empty:
         st.warning(f"No real-time data available for {selected_plant}.")
         return
 
+    display_real_time_data(dataframe, selected_plant)
+
+
+def display_real_time_data(dataframe: pd.DataFrame, selected_plant: str) -> None:
+    """Display the latest temperature and moisture readings for the selected plant."""
     dataframe["recording_at"] = pd.to_datetime(
         dataframe["recording_at"], errors="coerce"
     )
@@ -117,13 +167,12 @@ def display_real_time_data(dataframe: pd.DataFrame, selected_plant: str) -> None
 
 def render_historical_dashboard(dataframe: pd.DataFrame):
     """Render the historical data dashboard."""
-    st.title("Historical Plant Data")
 
-    selected_plant = st.sidebar.selectbox(
-        "Select Plant by Name", dataframe["plant_name"].unique()
+    plant_list = dataframe["plant_name"].unique()
+    selected_plant = st.sidebar.selectbox("Select Plant by Name", plant_list)
+    start_date = st.sidebar.date_input("Start Date", datetime.today()).strftime(
+        "%Y-%m-%d"
     )
-    start_date = st.sidebar.date_input(
-        "Start Date", datetime.today()).strftime("%Y-%m-%d")
     end_date = st.sidebar.date_input(
         "End Date", datetime.today()).strftime("%Y-%m-%d")
 
@@ -135,80 +184,45 @@ def render_historical_dashboard(dataframe: pd.DataFrame):
         start_date), pd.to_datetime(end_date))
 
 
-def display_historical_data(dataframe: pd.DataFrame, selected_plant: str, start_date: datetime, end_date: datetime) -> None:
+def display_historical_data(dataframe: pd.DataFrame, selected_plant: str,
+                            start_date: datetime, end_date: datetime) -> None:
     """Display historical data for the selected plant within a date range."""
-    if dataframe.empty:
-        st.warning("No historical data available.")
-        return
-
     if selected_plant:
         dataframe = dataframe[dataframe["plant_name"] == selected_plant]
 
     dataframe["recording_at"] = pd.to_datetime(
         dataframe["recording_at"], errors="coerce"
     )
-    dataframe = dataframe.dropna(subset=["recording_at"])
     dataframe = dataframe[
         (dataframe["recording_at"] >= start_date) & (
             dataframe["recording_at"] <= end_date)
     ]
 
-    if dataframe.empty:
-        st.warning(f"No data available for {
-                   selected_plant} in the selected date range.")
-        return
-
-    dataframe.reset_index(drop=True, inplace=True)
-
-    st.subheader(f"Soil Moisture Over Time for {selected_plant}")
-    if "recording_at" in dataframe.columns and "soil_moisture" in dataframe.columns:
-        moisture_chart = alt.Chart(dataframe).mark_line().encode(
-            x=alt.X(
-                "recording_at:T",
-                title="Time",
-                axis=alt.Axis(titleFontSize=14, labelFontSize=12),
-                timeUnit="hours"
-            ),
-            y=alt.Y(
-                "soil_moisture:Q",
-                title="Soil Moisture (%)",
-                axis=alt.Axis(titleFontSize=14, labelFontSize=12),
-            ),
-        ).configure_axis(
-            labelFontSize=12,
-            titleFontSize=14
-        ).properties(
-            width=700,
-            height=400,
-        )
-        st.altair_chart(moisture_chart, use_container_width=True)
-    else:
-        st.warning("Data for soil moisture is missing or improperly formatted.")
+    st.header(f"{selected_plant}")
 
     st.subheader(f"Temperature Over Time for {selected_plant}")
-    if "recording_at" in dataframe.columns and "temperature" in dataframe.columns:
-        temperature_chart = alt.Chart(dataframe).mark_line().encode(
-            x=alt.X(
-                "recording_at:T",
-                title="Time",
-                axis=alt.Axis(titleFontSize=14, labelFontSize=12),
-                timeUnit="hours"
-            ),
-            y=alt.Y(
-                "temperature:Q",
-                title="Temperature (°C)",
-                axis=alt.Axis(titleFontSize=14, labelFontSize=12),
-            ),
-        ).configure_axis(
-            labelFontSize=12,
-            titleFontSize=14
-        ).properties(
-            width=700,
-            height=400,
-        )
-        st.altair_chart(temperature_chart, use_container_width=True)
-    else:
-        st.warning("Data for temperature is missing or improperly formatted.")
+    temperature_chart = alt.Chart(dataframe).mark_line().encode(
+        x=alt.X("recording_at:T", title="Date/ Time",
+                axis=alt.Axis(
+                    format="%d-%m/ %I:%M %p",
+                    tickCount=10,
+                )
+                ),
+        y=alt.Y("temperature:Q", title="Temperature (°C)"),
+    )
+    st.altair_chart(temperature_chart, use_container_width=True)
+
+    st.subheader(f"Soil Moisture Over Time for {selected_plant}")
+    moisture_chart = alt.Chart(dataframe).mark_line().encode(
+        x=alt.X("recording_at:T", title="Date/ Time",
+                axis=alt.Axis(
+                    format="%d-%m/ %I:%M %p",
+                    tickCount=10,
+                )
+                ),
+        y=alt.Y("soil_moisture:Q", title="Soil Moisture (%)"),
+    )
+    st.altair_chart(moisture_chart, use_container_width=True)
 
 
 def run_streamlit():
@@ -216,13 +230,12 @@ def run_streamlit():
     st.sidebar.title("Navigation")
     page = st.sidebar.radio("Select Dashboard", ["Real-Time", "Historical"])
 
-    current_date = datetime.today().strftime("%Y-%m-%d")
-    file_key = get_file_key(current_date)
-    dataframe = fetch_data_from_s3(S3_BUCKET, file_key)
-
     if page == "Real-Time":
-        render_real_time_dashboard(dataframe)
+        render_real_time_dashboard()
     elif page == "Historical":
+        current_date = datetime.today().strftime("%Y-%m-%d")
+        file_key = get_file_key(current_date)
+        dataframe = fetch_data_from_s3(S3_BUCKET, file_key)
         render_historical_dashboard(dataframe)
 
 
