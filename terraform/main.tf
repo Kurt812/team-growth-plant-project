@@ -78,7 +78,7 @@ resource "aws_scheduler_schedule_group" "team_growth_schedule_group" {
 resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   name                = "c14-team-growth-lambda-schedule"
   group_name          = aws_scheduler_schedule_group.team_growth_schedule_group.name
-  schedule_expression = "cron(0/1 * * * ? *)" # Every minute
+  schedule_expression = "cron(0/1 * * * ? *)" 
   flexible_time_window {
     mode = "OFF"
   }

@@ -8,7 +8,7 @@ import load
 
 logging.basicConfig(level=logging.INFO)
 
-load_dotenv()
+load_dotenv(override=True)
 
 
 def run_extraction() -> pd.DataFrame:

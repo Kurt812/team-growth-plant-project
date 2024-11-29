@@ -79,7 +79,6 @@ def get_plant_names() -> list:
         return []
 
     query = "SELECT DISTINCT plant_name FROM gamma.plant;"
-
     dataframe = pd.read_sql(query, conn)
     conn.close()
     return dataframe["plant_name"].tolist()
