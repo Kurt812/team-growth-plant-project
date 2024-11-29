@@ -14,7 +14,7 @@ resource "aws_iam_role" "c14_team_growth_lambda_eventbridge_role" {
       {
         Effect = "Allow",
         Principal = {
-          Service = "scheduler.amazonaws.com"  # Allow EventBridge to assume the role
+          Service = "scheduler.amazonaws.com" 
         },
         Action = "sts:AssumeRole"
       }
@@ -55,7 +55,7 @@ resource "aws_iam_role_policy" "invoke_lambda_permission" {
     ]
   })
 }
-# EventBridge Scheduler to trigger Lambda every minute
+
 resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   name                = "c14-team-growth-lambda-schedule"
   schedule_expression = "cron(* * * * ? *)" # Every minute
@@ -72,7 +72,6 @@ resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   }
 }
 
-# Lambda Permission for EventBridge to Invoke Lambda
 resource "aws_lambda_permission" "team_growth_allow_eventbridge" {
   statement_id  = "AllowExecutionFromEventBridge"
   action        = "lambda:InvokeFunction"

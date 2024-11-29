@@ -26,7 +26,6 @@ resource "aws_scheduler_schedule" "pipeline_schedule" {
   }
 }
 
-# IAM Role for EventBridge to trigger ECS tasks
 resource "aws_iam_role" "eventbridge_role" {
   name = "EventBridgeEcsInvokeRole"
 
@@ -44,7 +43,6 @@ resource "aws_iam_role" "eventbridge_role" {
   })
 }
 
-# Attach necessary ECS permissions to the EventBridge role
 resource "aws_iam_role_policy" "eventbridge_ecs_policy" {
   name = "EventBridgeECSPolicy"
   role = aws_iam_role.eventbridge_role.id

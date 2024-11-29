@@ -120,7 +120,7 @@ class TestTransformScript(unittest.TestCase):
         data = {
             "plant_id": [1, 2, 3],
             "plant_name": ["Rose", "Tulip", "Lily"],
-            "soil_moisture": [50, 120, -10],  # 120 and -10 are invalid
+            "soil_moisture": [50, 120, -10],
             "temperature": [20, 25, 15],
             "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT",
                              "Tue, 26 Nov 2024 14:10:54 GMT",
