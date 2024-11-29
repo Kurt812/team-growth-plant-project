@@ -1,6 +1,5 @@
 .venv
 .env
-/images
 *.tfvars
 *.txt
 *.hcl
