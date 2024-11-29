@@ -38,19 +38,3 @@ resource "aws_security_group" "ecs_task_sg" {
     Name = "ecs_task_sg"
   }
 }
-
-resource "aws_iam_role" "c14-team-growth-lambda-role" {
-    name = "c14-team-growth-lambda-role"
-    assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-        {
-        "Effect" : "Allow",
-        "Principal" : {
-            "Service" : "lambda.amazonaws.com"
-        },
-        "Action" : "sts:AssumeRole"
-        }
-    ]
-    })
-}
