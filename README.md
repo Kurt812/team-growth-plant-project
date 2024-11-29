@@ -46,6 +46,7 @@ The architecture comprises:
 - **Streamlit**: Interactive dashboard for real-time monitoring and trend analysis of plant health metrics.
   - View graphs of temperature and soil moisture readings for all plants.
   - Query historical data from S3.
+  - Available at [http://18.175.201.133:8501/](http://18.175.201.133:8501/)
 
 ---
 
