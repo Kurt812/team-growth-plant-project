@@ -24,7 +24,6 @@ resource "aws_iam_role_policy_attachment" "lambda_vpc_access" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-# RDS IAM Policy Document (this grants permissions to connect to RDS)
 data "aws_iam_policy_document" "lambda_rds_access" {
   statement {
     effect    = "Allow"
@@ -39,14 +38,12 @@ data "aws_iam_policy_document" "lambda_rds_access" {
   }
 }
 
-# Attach RDS Policy to Lambda Role
 resource "aws_iam_role_policy" "lambda_rds_access" {
   name   = "c14-team-growth-lambda-rds-policy"
   role   = aws_iam_role.c14_team_growth_lambda_role.id
   policy = data.aws_iam_policy_document.lambda_rds_access.json
 }
 
-# Lambda function (removed VPC-specific configurations)
 resource "aws_lambda_function" "c14_team_growth_lambda" {
   function_name = "c14-team-growth-lambda"
   role          = aws_iam_role.c14_team_growth_lambda_role.arn
@@ -59,7 +56,6 @@ resource "aws_lambda_function" "c14_team_growth_lambda" {
   }
 }
 
-# Log group for Lambda
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name = "/aws/lambda/c14-team-growth-lambda-report"
 }
