@@ -87,8 +87,6 @@ def load_data_to_dataframe(db_connection: pymssql.Connection) -> pd.DataFrame:
     try:
         dataframe = pd.read_sql(query, db_connection)
         logging.info("Data successfully loaded into DataFrame.")
-        db_connection.close()
-        logging.info("Database connection closed.")
         return dataframe
     except pymssql.DatabaseError as e:
         logging.error("Database error during data extraction: %s", e)
@@ -96,14 +94,14 @@ def load_data_to_dataframe(db_connection: pymssql.Connection) -> pd.DataFrame:
 
 
 def clear_rds(db_connection: pymssql.Connection) -> None:
-    query = "TRUNCATE TABLE gamma.recordings;"
+    query = "TRUNCATE TABLE gamma.recording;"
 
     try:
         with db_connection.cursor() as cursor:
             cursor.execute(query)
             db_connection.commit()
         logging.info(
-            "All gamma.recordings table successfully dropped from the database.")
+            "The gamma.recording table successfully dropped from the database.")
     except pymssql.DatabaseError as e:
         logging.error("Database error during table deletion: %s", e)
         raise
@@ -167,6 +165,8 @@ def run_pipeline():
                      parquet_file)
 
     clear_rds(connection)
+    connection.close()
+    logging.info("Database connection closed.")
 
 
 if __name__ == "__main__":
