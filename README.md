@@ -100,7 +100,7 @@ Refer to the [ERD Diagram](images/ERD_diagram.png) for the relational database s
 ---
 
 ## Wireframe Design
-Refer to the [Dashboard Wireframe](../images/dashboard_wireframe.png) for the user interface of the Streamlit dashboard.
+Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime.png) (images/dashboard_wireframe_historical.png) for the user interface of the Streamlit dashboard.
 
 ---
 
