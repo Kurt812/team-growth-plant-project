@@ -26,6 +26,9 @@ The `etl_pipeline.py` script is the main script for extracting data from RDS and
 
 How to Run the Pipeline
 -----------------------
+
+## Local Setup
+
 1. **Install Dependencies**:
    Ensure you have Python installed and set up a virtual environment. Install dependencies by running:
    ```bash
@@ -34,7 +37,12 @@ How to Run the Pipeline
 
 2. **Set Up Environment Variables**:
     Use a `.env` file to provide database credentials and schema information:
-    DB_HOST=<your_database_host> DB_NAME=<your_database_name> DB_USER=<your_database_user> DB_PASSWORD=<your_database_password> DB_PORT=<your_database_port> SCHEMA_NAME=<your_schema_name>
+    DB_HOST=<your_database_host>
+    DB_NAME=<your_database_name>
+    DB_USER=<your_database_user>
+    DB_PASSWORD=<your_database_password>
+    DB_PORT=<your_database_port>
+    SCHEMA_NAME=<your_schema_name>
     S3_BUCKET=<s3_bucket_name>
     ACCESS_KEY_ID=<your_AWS_access_key_id>
     SECRET_ACCESS_KEY=<your_AWS_secret_access_key>
@@ -57,9 +65,35 @@ How to Run the Pipeline
     python3 etl_pipeline.py
     ```
 
+## Docker Deployment
+
+The ETL pipeline can also be run as a Docker container using the rds_to_s3_dockerfile.
+
+**Building the Docker Image**
+    Navigate to the project root directory and run the following command:
+    ```bash
+    docker build --file pipeline/rds_to_s3_dockerfile -t rds_to_s3_pipeline:v1.0 . --platform "linux/amd64"
+    ```
+
+    Alternatively, if you are in the pipeline directory:
+    ```bash
+    docker build --file rds_to_s3_dockerfile -t rds_to_s3_pipeline:v1.0 .. --platform "linux/amd64"
+    ```
+**Running the Docker Container**
+    To run the Docker container:
+    ```bash
+    docker run --env-file .env rds_to_s3_pipeline:v1.0
+    ```
+
 Testing
 -------
 Unit tests for the pipeline are located in the `test_etl_pipeline.py` script. Run tests using `pytest`:
     ```bash
     pytest test_etl_pipeline.py
     ```
+
+Folder Structure
+----------------
+- **etl_pipeline.py.py**: Main script for the ETL process.
+- **rds_to_s3_dockerfile**: Dockerfile for deploying the ETL pipeline as a container.
+- **test_etl_pipeline.py**: Contains unit tests for the pipeline components.
