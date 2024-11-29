@@ -1,7 +1,7 @@
 """Streamlit Dashboard for Plant Health Monitoring"""
 import os
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 import boto3
 import altair as alt
@@ -20,6 +20,13 @@ DB_CONFIG = {
     "password": os.getenv("DB_PASSWORD"),
     "port": os.getenv("DB_PORT"),
 }
+SCHEMA_NAME = os.getenv("SCHEMA_NAME")
+
+st.set_page_config(
+    page_title="LNHM Dashboard",
+    page_icon=":bar_chart:",
+    layout="wide"
+)
 
 st.title("🌱 Liverpool Natural History Museum - Plant Health Monitoring")
 st.write("Monitor real-time and historical plant health data from the botanical wing.")
@@ -53,18 +60,25 @@ def fetch_real_time_data_from_rds(selected_plant: str) -> pd.DataFrame:
             r.soil_moisture,
             r.temperature,
             r.last_watered,
-            r.recording_at
+            r.recording_at,
+            b.first_name,
+            b.last_name,
+            b.email,
+            b.phone
         FROM 
-            gamma.recording r
+            {SCHEMA_NAME}.recording r
         JOIN 
-            gamma.plant p
+            {SCHEMA_NAME}.plant p
         ON 
             r.plant_id = p.plant_id
+        JOIN 
+            {SCHEMA_NAME}.botanist b
+        ON
+            p.botanist_id = b.botanist_id
         WHERE 
             p.plant_name = '{selected_plant}'
         ORDER BY 
-            r.recording_at DESC
-        OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+            r.recording_at DESC;
     """
 
     dataframe = pd.read_sql(query, conn)
@@ -78,7 +92,7 @@ def get_plant_names() -> list:
     if not conn:
         return []
 
-    query = "SELECT DISTINCT plant_name FROM gamma.plant;"
+    query = f"SELECT DISTINCT plant_name FROM {SCHEMA_NAME}.plant;"
     dataframe = pd.read_sql(query, conn)
     conn.close()
     return dataframe["plant_name"].tolist()
@@ -141,11 +155,17 @@ def display_real_time_data(dataframe: pd.DataFrame, selected_plant: str) -> None
         else "N/A",
     )
 
+    st.sidebar.header("Botanist Information")
+    st.sidebar.markdown(f"""
+        **Name:** {latest_data['first_name']} {latest_data['last_name']}  
+        **Email:** {latest_data['email']}  
+        **Phone:** {latest_data['phone']}""")
+
     st.header(f"{selected_plant}")
 
     st.subheader("Real-Time Temperature Trend")
-    temperature_chart = alt.Chart(dataframe).mark_line().encode(
-        x=alt.X("recording_at:T", title="Time"),
+    temperature_chart = alt.Chart(dataframe).mark_line(color="forestgreen").encode(
+        x=alt.X("recording_at:T", title="Time", axis=alt.Axis(format="%H:%M")),
         y=alt.Y("temperature:Q", title="Temperature (°C)"),
     ).properties(
         width=700,
@@ -154,8 +174,8 @@ def display_real_time_data(dataframe: pd.DataFrame, selected_plant: str) -> None
     st.altair_chart(temperature_chart, use_container_width=True)
 
     st.subheader("Real-Time Soil Moisture Trend")
-    moisture_chart = alt.Chart(dataframe).mark_line().encode(
-        x=alt.X("recording_at:T", title="Time"),
+    moisture_chart = alt.Chart(dataframe).mark_line(color="forestgreen").encode(
+        x=alt.X("recording_at:T", title="Time", axis=alt.Axis(format="%H:%M")),
         y=alt.Y("soil_moisture:Q", title="Soil Moisture (%)"),
     ).properties(
         width=700,
@@ -169,7 +189,7 @@ def render_historical_dashboard(dataframe: pd.DataFrame):
 
     plant_list = dataframe["plant_name"].unique()
     selected_plant = st.sidebar.selectbox("Select Plant by Name", plant_list)
-    start_date = st.sidebar.date_input("Start Date", datetime.today()).strftime(
+    start_date = st.sidebar.date_input("Start Date", datetime.today()-timedelta(1)).strftime(
         "%Y-%m-%d"
     )
     end_date = st.sidebar.date_input(
@@ -200,11 +220,10 @@ def display_historical_data(dataframe: pd.DataFrame, selected_plant: str,
     st.header(f"{selected_plant}")
 
     st.subheader(f"Temperature Over Time for {selected_plant}")
-    temperature_chart = alt.Chart(dataframe).mark_line().encode(
+    temperature_chart = alt.Chart(dataframe).mark_line(color="forestgreen").encode(
         x=alt.X("recording_at:T", title="Date/ Time",
                 axis=alt.Axis(
-                    format="%d-%m/ %I:%M %p",
-                    tickCount=10,
+                    format="%d-%m/ %H:%M",
                 )
                 ),
         y=alt.Y("temperature:Q", title="Temperature (°C)"),
@@ -212,11 +231,10 @@ def display_historical_data(dataframe: pd.DataFrame, selected_plant: str,
     st.altair_chart(temperature_chart, use_container_width=True)
 
     st.subheader(f"Soil Moisture Over Time for {selected_plant}")
-    moisture_chart = alt.Chart(dataframe).mark_line().encode(
+    moisture_chart = alt.Chart(dataframe).mark_line(color="forestgreen").encode(
         x=alt.X("recording_at:T", title="Date/ Time",
                 axis=alt.Axis(
-                    format="%d-%m/ %I:%M %p",
-                    tickCount=10,
+                    format="%d-%m/ %H:%M",
                 )
                 ),
         y=alt.Y("soil_moisture:Q", title="Soil Moisture (%)"),
