@@ -98,7 +98,7 @@ The following technologies were used:
 ---
 
 ## Wireframe Design
-![Dashboard Wireframe](images/dashboard_wireframe_realtime_v2.png) (images/dashboard_wireframe_historical.png)
+![Dashboard Wireframe](images/dashboard_wireframe_realtime.png) (images/dashboard_wireframe_historical.png)
 
 ## Assumptions
 - Botanist contact information (e.g., email, phone number) is intentionally excluded from the historical data dashboard. This ensures that if a botanist leaves the institute, their personal data will not persist on the dashboard, maintaining privacy and security.
