@@ -105,4 +105,16 @@ Refer to the [Dashboard Wireframe](../images/dashboard_wireframe.png) for the us
 ---
 
 ## Future Improvements
-- 
+1. Mobile App Integration
+   - Create a mobile application for on-the-go monitoring of plant health metrics.
+   - Include push notifications for critical alerts (e.g., low soil moisture, extreme temperatures).
+
+2. Expanded Visualisation Features
+   - Add comparison graphs to analyse multiple plants simultaneously.
+   - Include dynamic filters for customisable visualisation views (e.g., by botanist, plant species, or section of the conservatory).
+
+3. Real-Time Notifications
+   - Implement SMS, email notifications for real-time alerts on critical readings.
+
+4. Historical Data Enrichment
+   - Include additional metadata for plants, such as origin, species-specific needs, and growth patterns.
