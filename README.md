@@ -100,7 +100,10 @@ Refer to the [ERD Diagram](images/ERD_diagram.png) for the relational database s
 ---
 
 ## Wireframe Design
-Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime.png) (images/dashboard_wireframe_historical.png) for the user interface of the Streamlit dashboard.
+Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime_v2.png) (images/dashboard_wireframe_historical.png) for the user interface of the Streamlit dashboard.
+
+## Assumptions
+- Botanist contact information (e.g., email, phone number) is intentionally excluded from the historical data dashboard. This ensures that if a botanist leaves the institute, their personal data will not persist on the dashboard, maintaining privacy and security.
 
 ---
 
@@ -118,3 +121,12 @@ Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime.png) (ima
 
 4. Historical Data Enrichment
    - Include additional metadata for plants, such as origin, species-specific needs, and growth patterns.
+
+5. Object-Oriented Programming (OOP) Integration
+   - Future iterations could explore using OOP principles, treating entities such as plants and botanists as objects. This would provide a more modular and scalable codebase, improving maintainability and readability.
+
+Why OOP was not Used in This Attempt:
+
+    Simpler Implementation Needs: For the initial phase, the project’s requirements were straightforward, and procedural programming provided a faster and more direct approach.
+    Time Constraints: Implementing OOP requires additional time for designing and structuring classes, which was not feasible given the project timeline.
+    Data Size and Complexity: The current scale and complexity of the data did not necessitate the use of OOP. As the project evolves, and the system handles more complex interactions, OOP could become more beneficial.
