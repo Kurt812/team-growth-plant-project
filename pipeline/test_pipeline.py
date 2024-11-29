@@ -1,12 +1,11 @@
 """Tests for extracting raw data from API, transforming and loading into database."""
-import os
 import unittest
 from unittest.mock import MagicMock, patch
 import requests
 import pandas as pd
 from extract import get_plant_data, parse_plant_data, extract_botanist_name
 from transform import clean_plant_data
-from load import get_db_connection, insert_botanists, insert_plants, insert_recordings, load_data_to_database
+from load import get_db_connection, insert_botanists, insert_plants, insert_recordings
 
 
 COLUMNS = [
@@ -121,10 +120,14 @@ class TestTransformScript(unittest.TestCase):
         data = {
             "plant_id": [1, 2, 3],
             "plant_name": ["Rose", "Tulip", "Lily"],
-            "soil_moisture": [50, 120, -10],  # 120 and -10 are invalid
+            "soil_moisture": [50, 120, -10],
             "temperature": [20, 25, 15],
-            "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT", "Tue, 26 Nov 2024 14:10:54 GMT", "Tue, 26 Nov 2024 14:10:54 GMT"],
-            "recording_at": ["2024-11-27 16:02:48", "2024-11-27 16:02:48", "2024-11-27 16:02:48"],
+            "last_watered": ["Tue, 26 Nov 2024 14:10:54 GMT",
+                             "Tue, 26 Nov 2024 14:10:54 GMT",
+                             "Tue, 26 Nov 2024 14:10:54 GMT"],
+            "recording_at": ["2024-11-27 16:02:48",
+                             "2024-11-27 16:02:48",
+                             "2024-11-27 16:02:48"],
             "botanist_first_name": ["Alice", "Bob", "Charlie"],
             "botanist_last_name": ["Smith", "Johnson", "Brown"],
             "botanist_email": ["alice@example.com", "bob@example.com", "charlie@example.com"],

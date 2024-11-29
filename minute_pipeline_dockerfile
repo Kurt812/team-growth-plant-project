@@ -12,4 +12,6 @@ COPY pipeline/transform.py ${LAMBDA_TASK_ROOT}
 
 COPY pipeline/pipeline.py ${LAMBDA_TASK_ROOT}
 
+EXPOSE 443
+
 CMD [ "pipeline.lambda_handler" ]

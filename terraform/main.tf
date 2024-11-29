@@ -2,34 +2,43 @@ provider "aws" {
   region = "eu-west-2"
 }
 
-# ECR Repository
-resource "aws_ecr_repository" "c14_team_growth_lmnh" {
-  encryption_configuration {
-    encryption_type = "AES256"
+resource "aws_security_group" "ecs_task_sg" {
+  name        = "c14-team-growth-etl-security"
+  description = "Security group for SQL Server allowing access only on port 1433"
+  vpc_id      = var.vpc_id
+  lifecycle {
+    prevent_destroy = false
   }
 
-  image_scanning_configuration {
-    scan_on_push = false
+  ingress {
+    description      = "Allow SQL Server access"
+    from_port        = 1433
+    to_port          = 1433
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 
-  image_tag_mutability = "MUTABLE"
-  name                 = "c14-team-growth-lmnh"
-}
+  ingress {
+    description      = "Allows API"
+    from_port        = 433
+    to_port          = 433
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 
-output "ecr_repository_id" {
-  value = aws_ecr_repository.c14_team_growth_lmnh.id
-}
-
-# S3 Bucket for Long-Term Storage
-resource "aws_s3_bucket" "long_term_storage" {
-  bucket = "c14-team-growth-storage"                   
+  egress {
+    description      = "Allow all outbound traffic"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 
   tags = {
-    Name        = "LongTermStorage"
+    Name = "ecs_task_sg"
   }
 }
 
-# IAM Role for Lambda
 resource "aws_iam_role" "c14-team-growth-lambda-role" {
     name = "c14-team-growth-lambda-role"
     assume_role_policy = jsonencode({
@@ -74,7 +83,7 @@ resource "aws_scheduler_schedule_group" "team_growth_schedule_group" {
   name = "team-growth-schedule-group"
 }
 
-# EventBridge Scheduler for Lambda (Every Minute)
+
 resource "aws_scheduler_schedule" "team_growth_every_minute_schedule" {
   name                = "c14-team-growth-lambda-schedule"
   group_name          = aws_scheduler_schedule_group.team_growth_schedule_group.name
