@@ -8,7 +8,7 @@ import pymssql
 
 logging.basicConfig(level=logging.INFO)
 
-load_dotenv()
+load_dotenv(override=True)
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),

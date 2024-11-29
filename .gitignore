@@ -10,3 +10,5 @@
 *.csv
 *.tfstate.*
 .terraform.*
+*.pyc
+.DS_Store
