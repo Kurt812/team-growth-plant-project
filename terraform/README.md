@@ -128,5 +128,6 @@ This Terraform setup provisions an AWS infrastructure to support an ETL pipeline
 ## Additional Notes
 
 	•	Modify variables in variables.tf to customize the setup (e.g., vpc_id, database configurations).
+    •   To run the code successfully a terraform.tfvars file is needed, containing the relevant secret variables.
 	•	Ensure Docker images are pushed to the ECR repository before deploying the ECS task or Lambda.
 	•	Logs for debugging can be found in the CloudWatch Log Groups.
