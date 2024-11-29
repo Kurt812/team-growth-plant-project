@@ -100,7 +100,7 @@ Refer to the [ERD Diagram](images/ERD_diagram.png) for the relational database s
 ---
 
 ## Wireframe Design
-Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime_v2.png) (images/dashboard_wireframe_historical.png) for the user interface of the Streamlit dashboard.
+Refer to the [Dashboard Wireframe](images/dashboard_wireframe_realtime.png) (images/dashboard_wireframe_historical.png) for the user interface of the Streamlit dashboard.
 
 ## Assumptions
 - Botanist contact information (e.g., email, phone number) is intentionally excluded from the historical data dashboard. This ensures that if a botanist leaves the institute, their personal data will not persist on the dashboard, maintaining privacy and security.
