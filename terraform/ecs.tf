@@ -99,3 +99,6 @@ resource "aws_ecs_task_definition" "c14_team_growth_rds_to_s3_etl" {
     operating_system_family = "LINUX"
   }
 }
+
+
+
