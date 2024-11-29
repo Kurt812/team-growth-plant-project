@@ -11,7 +11,7 @@ This script performs the following steps as part of an ETL pipeline:
 # pylint: disable=no-member
 import os
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 import boto3
 import pymssql
 import pandas as pd
@@ -149,9 +149,9 @@ def run_pipeline():
     connection = get_db_connection()
     complete_dataframe = load_data_to_dataframe(connection)
 
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    parquet_file = save_to_parquet(complete_dataframe, current_date)
-    s3_key = f"{S3_KEY_PREFIX}{current_date}.parquet"
+    yesterday = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
+    parquet_file = save_to_parquet(complete_dataframe, yesterday)
+    s3_key = f"{S3_KEY_PREFIX}{yesterday}.parquet"
 
     if not isinstance(parquet_file, str):
         raise ValueError(f"""Expected string for local file, got {
